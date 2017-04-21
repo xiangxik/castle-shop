@@ -1,0 +1,376 @@
+<!doctype html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<style type="text/css">
+.container {
+	position: relative;
+	overflow: hidden;
+}
+
+.container .item {
+	line-height: 20px;
+	float: left;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	color: #666666;
+	overflow: hidden;
+	word-wrap: break-word;
+	filter: alpha(opacity = 80);
+	-moz-opacity: 0.8;
+	opacity: 0.8;
+	border: 1px dotted #999999;
+	background: #ffffff;
+}
+
+.container .selected {
+	filter: alpha(opacity = 100);
+	-moz-opacity: 1;
+	opacity: 1;
+	border: 1px solid #d73925;
+}
+
+.container pre {
+	height: 100%;
+	float: left;
+	cursor: move;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+.container .resize {
+	height: 6px;
+	width: 6px;
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+	overflow: hidden;
+	cursor: nw-resize;
+	background-color: #aaaaaa;
+}
+</style>
+</head>
+<body>
+	<section class="content-header">
+		<h1>
+			快递单模版 <small th:text="(${entity.new}?'新建':'编辑')+'快递单模版'"></small>
+		</h1>
+		<ol class="breadcrumb">
+			<li><a href="javascript:;"><i class="fa fa-cogs"></i> 系统管理</a></li>
+			<li class="active" th:text="(${entity.new}?'新建':'编辑')+'快递单模版'"></li>
+		</ol>
+	</section>
+
+	<section class="content">
+		<div class="box box-primary">
+			<div class="box-header with-border">
+				<h3 class="box-title">请输入快递单模版信息</h3>
+			</div>
+			<form id="form-deliveryTemplate" class="form-horizontal" th:action="@{/deliveryTemplate/save}" method="post"
+				th:object="${entity}">
+				<input type="hidden" name="id" th:value="*{id}" />
+				<div class="box-body">
+					<div class="form-group">
+						<label for="input-name" class="col-sm-2 control-label"><i class="required-tip">*</i>名称</label>
+
+						<div class="col-sm-10">
+							<input class="form-control" id="input-name" placeholder="请输入名称" name="name" th:value="*{name}" type="text"
+								data-bv-notempty="true" data-bv-notempty-message="请填写名称">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="input-tag" class="col-sm-2 control-label">选择标签</label>
+
+						<div class="col-sm-10">
+							<div class="form-control no-border">
+								<button aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+									class="btn btn-primary btn-sm dropdown-toggle" type="button" id="tagOptionDropdown">
+									<i class="fa fa-plus"></i> 选择标签 <span class="fa fa-caret-down"></span>
+								</button>
+								<ul id="tagOption" class="dropdown-menu">
+									<li><a href="javascript:;" val="[[${deliveryCenter.name}]]">发货点 - 名称</a></li>
+									<li><a href="javascript:;" val="[[${deliveryCenter.contact}]]">发货点 - 联系人</a></li>
+									<li><a href="javascript:;" val="[[${deliveryCenter.address}]]">发货点 - 地址</a></li>
+									<li><a href="javascript:;" val="[[${deliveryCenter.zipCode}]]">发货点 - 邮编</a></li>
+									<li><a href="javascript:;" val="[[${deliveryCenter.phone}]]">发货点 - 电话</a></li>
+									<li><a href="javascript:;" val="[[${deliveryCenter.mobile}]]">发货点 - 手机</a></li>
+									<li><a href="javascript:;" val="[[${order.consignee}]]">收货人 - 姓名</a></li>
+									<li><a href="javascript:;" val="[[${order.address}]]">收货人 - 地址</a></li>
+									<li><a href="javascript:;" val="[[${order.zipCode}]]">收货人 - 邮编</a></li>
+									<li><a href="javascript:;" val="[[${order.phone}]]">收货人 - 电话/手机</a></li>
+									<li><a href="javascript:;" val="[[${order.sn}]]">订单 - 订单编号</a></li>
+									<li><a href="javascript:;" val="[[${#numbers.formatDecimal(order.amount, 0, 2)}]]">订单 - 订单总额</a></li>
+									<li><a href="javascript:;" val="[[${order.memo}]]">订单 - 附言</a></li>
+									<li><a href="javascript:;" val="[[${order.remark}]]">订单 - 备注</a></li>
+									<li><a href="javascript:;" val="[[${#dates.format(currentDate, 'yyyy-MM-dd HH:mm:ss)}]]">当前日期</a></li>
+								</ul>
+								<a id="deleteTag" class="btn btn-danger btn-sm" href="javascript:;"><i class="glyphicon glyphicon-remove"></i>
+									移除标签 </a>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="input-content" class="col-sm-2 control-label"><i class="required-tip">*</i>内容</label>
+
+						<div class="col-sm-10">
+							<div id="container" class="form-control container" style="margin: 0;" th:utext="*{content}"></div>
+							<input type="hidden" name="content" />
+						</div>
+					</div>
+
+					<div class="form-group" id="group-background">
+						<label for="input-background" class="col-sm-2 control-label">背景图片</label>
+
+						<div class="col-sm-10">
+							<input type="file" class="file-loading" name="file"> <input type="hidden" name="background"
+								th:value="*{background}">
+						</div>
+					</div>
+
+
+					<div class="form-group">
+						<label for="input-width" class="col-sm-2 control-label"><i class="required-tip">*</i>宽度</label>
+
+						<div class="col-sm-10">
+							<input class="form-control" id="input-width" placeholder="请输入宽度" name="width" th:value="*{width}" type="text"
+								data-bv-notempty="true" data-bv-notempty-message="请填写宽度">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="input-height" class="col-sm-2 control-label"><i class="required-tip">*</i>高度</label>
+
+						<div class="col-sm-10">
+							<input class="form-control" id="input-height" placeholder="请输入高度" name="height" th:value="*{height}" type="text"
+								data-bv-notempty="true" data-bv-notempty-message="请填写高度">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="input-offsetX" class="col-sm-2 control-label"><i class="required-tip">*</i>偏移量X</label>
+
+						<div class="col-sm-10">
+							<input class="form-control" id="input-offsetX" placeholder="请输入偏移量X" name="offsetX" th:value="*{offsetX}"
+								type="text" data-bv-notempty="true" data-bv-notempty-message="请填写偏移量X">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="input-offsetY" class="col-sm-2 control-label"><i class="required-tip">*</i>偏移量Y</label>
+
+						<div class="col-sm-10">
+							<input class="form-control" id="input-offsetY" placeholder="请输入偏移量Y" name="offsetY" th:value="*{offsetY}"
+								type="text" data-bv-notempty="true" data-bv-notempty-message="请填写偏移量Y">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label">默认</label>
+
+						<div class="col-sm-10">
+							<div class="checkbox icheck">
+								<label> <input type="checkbox" name="isDefault" th:checked="*{isDefault}"><input type="hidden"
+									name="_isDefault" />
+								</label>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="input-memo" class="col-sm-2 control-label">备注</label>
+
+						<div class="col-sm-10">
+							<textarea class="form-control" id="input-memo" name="memo" rows="3" placeholder="请输入备注" th:text="*{memo}"></textarea>
+						</div>
+					</div>
+				</div>
+				<div class="box-footer">
+					<button type="button" class="btn btn-default" onclick="location.href='#/page/deliveryTemplate'">返回列表</button>
+					<button type="submit" class="btn btn-success pull-right">保存</button>
+				</div>
+			</form>
+		</div>
+	</section>
+
+
+	<script type="text/javascript">
+		requirejs([ "domReady", "validator", "icheck", "holder", "fileinput", "drag" ], function(ready) {
+			ready(function() {
+				activeMenu("management_deliveryTemplate");
+				$(".icheck input").iCheck({
+					checkboxClass : 'icheckbox_square-blue',
+					radioClass : 'iradio_square-blue',
+					increaseArea : '20%' // optional
+				});
+
+				var $container = $("#container");
+				var $tagOption = $("#tagOption a");
+				var $deleteTag = $("#deleteTag");
+				var zIndex = 1;
+				
+				var initBackground = $("#form-deliveryTemplate").find("input[name=background]").val();
+				var initWidth = $("#form-deliveryTemplate").find("input[name=width]").val();
+				var initHeight = $("#form-deliveryTemplate").find("input[name=height]").val();
+				
+				if(initBackground&&$.trim(initBackground)!="") {
+					$container.css({
+						background : "url(" + initBackground + ") 0px 0px no-repeat"
+					});
+				}
+				if(initWidth&&$.trim(initWidth)!="") {
+					$container.width(initWidth);
+				}
+				if(initHeight&&$.trim(initHeight)!="") {
+					$container.height(initHeight);
+				}
+
+				var initFileInput = function(element) {
+					element.fileinput({
+						uploadUrl : base + "/multipart/upload/image",
+						language : "zh",
+						initialCaption : element.closest(".form-group").find("input[type=hidden]").val(),
+						showPreview : false,
+						multiple : false,
+						showUpload : false, // hide upload button
+						showRemove : false, // hide remove button
+						minFileCount : 1,
+						maxFileCount : 1,
+						allowedFileTypes : [ "image" ],
+						maxFileSize : 200 * 1024 * 1024
+					}).on("filebatchselected", function(event, files) {
+						$(this).fileinput("upload");
+					}).on('fileuploaded', function(event, data, previewId, index) {
+						response = data.response;
+						if (response.success) {
+							$(this).closest(".form-group").find("input[type=hidden]").val(response.urls);
+							$container.css({
+								background : "url(" + response.urls + ") 0px 0px no-repeat"
+							});
+						}
+					});
+				}
+				initFileInput($("#group-background input[type=file]"));
+				
+				// 绑定
+				function drag($item) {
+					$item.drag("start", function(ev, dd) {
+						var $this = $(this);
+						dd.width = $this.width();
+						dd.height = $this.height();
+						dd.limit = {
+							right: $container.innerWidth() - $this.outerWidth(),
+							bottom: $container.innerHeight() - $this.outerHeight()
+						};
+						dd.isResize = $(ev.target).hasClass("resize");
+					}).drag(function(ev, dd) {
+						var $this = $(this);
+						if (dd.isResize) {
+							$this.css({
+								width: Math.max(20, Math.min(dd.width + dd.deltaX, $container.innerWidth() - $this.position().left) - 2),
+								height: Math.max(20, Math.min(dd.height + dd.deltaY, $container.innerHeight() - $this.position().top) - 2)
+							}).find("textarea").blur();
+						} else {
+							$this.css({
+								top: Math.min(dd.limit.bottom, Math.max(0, dd.offsetY)),
+								left: Math.min(dd.limit.right, Math.max(0, dd.offsetX))
+							});
+						}
+					}, {relative: true}).mousedown(function() {
+						$(this).css("z-index", zIndex++);
+					}).click(function() {
+						var $this = $(this);
+						$container.find("div.item").not($this).removeClass("selected");
+						$this.toggleClass("selected");
+					}).dblclick(function() {
+						var $this = $(this);
+						if ($this.find("textarea").size() == 0) {
+							var $pre = $this.find("pre");
+							var value = $pre.hide().text($pre.html()).html();
+							$('<textarea>' + value + '<\/textarea>').replaceAll($pre).width($this.innerWidth() - 6).height($this.innerHeight() - 6).blur(function() {
+								var $this = $(this);
+								$this.replaceWith('<pre>' + $this.val() + '<\/pre>');
+							}).focus();
+						}
+					});
+				}
+				drag($container.find("div.item"));
+				// 标签选项
+				$tagOption.click(function() {
+					var $this = $(this);
+					var value = $this.attr("val");
+					if (value != "") {
+						drag($('<div class="item"><pre>' + value + '<\/pre><div class="resize"><\/div><\/div>').appendTo($container));
+					}
+					$("#tagOptionDropdown").dropdown('hide');
+					return false;
+				});
+
+				// 删除标签
+				$deleteTag.click(function() {
+					$container.find("div.selected").remove();
+					return false;
+				});
+
+				// 宽度
+				$("form input[name=width]").bind("input propertychange change", function() {
+					$container.width($(this).val());
+				});
+
+				// 高度
+				$("form input[name=height]").bind("input propertychange change", function() {
+					$container.height($(this).val());
+				});
+
+				$("#form-deliveryTemplate").bootstrapValidator().on(
+						"success.form.bv",
+						function(e) {
+							e.preventDefault();
+							var $form = $(e.target);
+							if ($.trim($container.html()) == "") {
+								$.alert({
+									title : false,
+									content : "内容不允许为空"
+								});
+								$form.bootstrapValidator('disableSubmitButtons', false);
+								return false;
+							}
+							$form.find("input[name=content]").val($container.html());
+							var bv = $form.data('bootstrapValidator');
+							$.post($form.attr('action'), $form.serialize(), function(result) {
+								$form.find(".form-control").next("small").remove();
+								if (result.success) {
+									$.alert({
+										title : false,
+										content : "保存成功",
+										buttons : {
+											ok : {
+												text : "返回列表",
+												action : function() {
+													location.href = "#/page/deliveryTemplate";
+												}
+											}
+										}
+									});
+								} else {
+									if (result.code == "validateError") {
+										$.each(result.data, function(i, error) {
+											if (error.field) {
+												$form.find(".form-control[name=" + error.field + "]").after(
+														"<small>" + error.defaultMessage + "</small>");
+											}
+										});
+									}
+									$.alert({
+										title : false,
+										content : result.msg
+									});
+									$form.bootstrapValidator('disableSubmitButtons', false);
+								}
+							}, "json");
+						});
+			});
+		});
+	</script>
+</body>
+</html>
+

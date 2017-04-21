@@ -1,0 +1,250 @@
+<!doctype html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<section class="content-header">
+		<h1>
+			商品规格 <small th:text="(${entity.new}?'新建':'编辑')+'商品规格'"></small>
+		</h1>
+		<ol class="breadcrumb">
+			<li><a href="javascript:;"><i class="fa fa-cogs"></i> 系统管理</a></li>
+			<li class="active" th:text="(${entity.new}?'新建':'编辑')+'商品规格'"></li>
+		</ol>
+	</section>
+
+	<section class="content">
+		<div class="box box-primary">
+			<div class="box-header with-border">
+				<h3 class="box-title">请输入商品规格信息</h3>
+			</div>
+			<form id="form-specification" class="form-horizontal" th:action="@{/specification/save}" method="post"
+				th:object="${entity}">
+				<input type="hidden" name="id" th:value="*{id}" /> <input type="hidden" name="specificationValueCount" value="" />
+				<div class="box-body">
+					<div class="form-group">
+						<label for="input-name" class="col-sm-2 control-label"><i class="required-tip">*</i>名称</label>
+
+						<div class="col-sm-10">
+							<input class="form-control" id="input-name" placeholder="请输入名称" name="name" th:value="*{name}" type="text"
+								data-bv-notempty="true" data-bv-notempty-message="请填写名称">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="input-type" class="col-sm-2 control-label">类型</label>
+
+						<div class="col-sm-10">
+							<select id="input-type" name="type" class="form-control">
+								<option value="text" th:selected="*{type}=='text'">文本</option>
+								<option value="image" th:selected="*{type}=='image'">图片</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="input-memo" class="col-sm-2 control-label">备注</label>
+
+						<div class="col-sm-10">
+							<input class="form-control" id="input-memo" placeholder="请输入备注" name="memo" th:value="*{memo}" type="text">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="input-sortNo" class="col-sm-2 control-label">排序号</label>
+
+						<div class="col-sm-10">
+							<input class="form-control" id="input-sortNo" placeholder="请输入排序号" name="sortNo" th:value="*{sortNo}" type="text">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="input-specificationValue" class="col-sm-2 control-label"><i class="required-tip">*</i>规格值</label>
+
+						<div class="col-sm-10">
+							<div class="box">
+								<div class="box-header">
+									<div class="box-title">
+										<div class="btn-group btn-group-sm">
+											<a id="button-specificationValues-add" class="btn btn-primary" href="javascript:;"> <i class="fa fa-plus"></i>
+												添加
+											</a>
+										</div>
+									</div>
+								</div>
+								<div class="box-body no-padding">
+									<table id="table-specificationValues" class="table table-bordered">
+										<thead>
+											<tr>
+												<th style="width: 180px">规格值名称</th>
+												<th>图片</th>
+												<th style="width: 120px">排序号</th>
+												<th class="text-center command-column" style="width: 100px">操作</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="specificationValue : *{specificationValues}">
+												<td><input name="id" th:value="${specificationValue.id}" type="hidden"> <input
+													class="form-control" name="name" th:value="${specificationValue.name}" placeholder="请输入规格值名称" type="text">
+												</td>
+												<td><input type="file" class="file-loading" name="file"> <input type="hidden" name="image"
+													th:value="${specificationValue.image}"></td>
+												<td><input class="form-control" name="sortNo" th:value="${specificationValue.sortNo}"
+													placeholder="请输入排序号" type="text"></td>
+												<td class="text-center command-column">
+													<div class="btn-group btn-group-sm">
+														<a class="btn btn-primary" href="javascript:;" onclick="$(this).closest('tr').remove();"> <i
+															class="glyphicon glyphicon-remove"></i>
+														</a>
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+				</div>
+				<div class="box-footer">
+					<button type="button" class="btn btn-default" onclick="location.href='#/page/specification'">返回列表</button>
+					<button type="submit" class="btn btn-success pull-right">保存</button>
+				</div>
+			</form>
+		</div>
+	</section>
+
+
+	<script type="text/javascript">
+		requirejs(
+				[ "domReady", "validator", "icheck", "fileinput" ],
+				function(ready) {
+					ready(function() {
+						activeMenu("management_specification");
+						$(".icheck input").iCheck({
+							checkboxClass : 'icheckbox_square-blue',
+							radioClass : 'iradio_square-blue',
+							increaseArea : '20%' // optional
+						});
+
+						var initFileInput = function(element) {
+							element.fileinput({
+								uploadUrl : base + "/multipart/upload/image",
+								language : "zh",
+								initialCaption : element.closest("td").children("input[type=hidden]").val(),
+								showPreview : false,
+								multiple : false,
+								showUpload : false, // hide upload button
+								showRemove : false, // hide remove button
+								minFileCount : 1,
+								maxFileCount : 1,
+								allowedFileTypes : [ "image" ],
+								maxFileSize : 200 * 1024 * 1024
+							}).on("filebatchselected", function(event, files) {
+								$(this).fileinput("upload");
+							}).on('fileuploaded', function(event, data, previewId, index) {
+								response = data.response;
+								if (response.success) {
+									$(this).closest("td").children("input[type=hidden]").val(response.urls);
+								}
+							});
+						}
+
+						var $tableSpecificationValues = $("#table-specificationValues");
+
+						$.each($tableSpecificationValues.find("input[type=file]"), function(i, item) {
+							var $item = $(item);
+							initFileInput($item);
+						});
+
+						$("#button-specificationValues-add")
+								.on(
+										"click",
+										function() {
+											var $tr = $("<tr />");
+											var $td1 = $("<td />");
+											var $td2 = $("<td />");
+											var $td3 = $("<td />");
+											var $td4 = $("<td />").addClass("text-center").addClass("command-column");
+
+											var $input_name = $("<input class=\"form-control\" name=\"name\" placeholder=\"请输入规格名称\" type=\"text\">");
+											$td1.append($input_name);
+
+											var $file = $("<input type=\"file\" class=\"file-loading\" name=\"file\">");
+											var $file_hidden = $("<input type=\"hidden\" name=\"image\">");
+											$td2.append($file).append($file_hidden);
+
+											var $input_sort = $("<input class=\"form-control\" name=\"sortNo\" placeholder=\"请输入排序号\" type=\"text\">");
+											$td3.append($input_sort);
+
+											var $link_del = $("<a class=\"btn btn-primary btn-sm\" href=\"javascript:;\"> <i class=\"glyphicon glyphicon-remove\"></i></a>")
+											$td4.append($link_del);
+
+											$tr.append($td1).append($td2).append($td3).append($td4);
+											$tableSpecificationValues.children("tbody").append($tr);
+
+											initFileInput($file);
+											$link_del.on("click", function() {
+												$(this).closest('tr').remove();
+											});
+										});
+
+						$("#form-specification").bootstrapValidator().on(
+								"success.form.bv",
+								function(e) {
+									e.preventDefault();
+									var $form = $(e.target);
+									var bv = $form.data('bootstrapValidator');
+
+									var specificationValueCount = 0;
+									$.each($tableSpecificationValues.find("tbody>tr"), function(i, tr) {
+										var $tr = $(tr);
+										$tr.find("input[name=id]").attr("name", "specificationValues[" + i + "].id");
+										$tr.find("input[name=name]")
+												.attr("name", "specificationValues[" + i + "].name");
+										$tr.find("input[name=image]").attr("name",
+												"specificationValues[" + i + "].image");
+										$tr.find("input[name=sortNo]").attr("name",
+												"specificationValues[" + i + "].sortNo");
+										specificationValueCount++;
+									});
+									$form.find("input[name=specificationValueCount]").val(specificationValueCount);
+
+									$.post($form.attr('action'), $form.serialize(), function(result) {
+										$form.find(".form-control").next("small").remove();
+										if (result.success) {
+											$.alert({
+												title : false,
+												content : "保存成功",
+												buttons : {
+													ok : {
+														text : "返回列表",
+														action : function() {
+															location.href = "#/page/specification";
+														}
+													}
+												}
+											});
+										} else {
+											if (result.code == "validateError") {
+												$.each(result.data, function(i, error) {
+													if (error.field) {
+														$form.find(".form-control[name=" + error.field + "]").after(
+																"<small>" + error.defaultMessage + "</small>");
+													}
+												});
+											}
+											$.alert({
+												title : false,
+												content : result.msg
+											});
+											$form.bootstrapValidator('disableSubmitButtons', false);
+										}
+									}, "json");
+								});
+					});
+				});
+	</script>
+</body>
+</html>
+

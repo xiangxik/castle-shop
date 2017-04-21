@@ -1,0 +1,58 @@
+<!doctype html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+	<aside th:fragment="main" class="main-sidebar">
+		<!-- sidebar: style can be found in sidebar.less -->
+		<section class="sidebar">
+			<!-- search form -->
+			<!-- <form action="#" method="get" class="sidebar-form">
+				<div class="input-group">
+					<input type="text" name="q" class="form-control" placeholder="搜索"> <span class="input-group-btn">
+						<button type="submit" name="search" id="search-btn" class="btn btn-flat">
+							<i class="fa fa-search"></i>
+						</button>
+					</span>
+				</div>
+			</form> -->
+			<!-- /.search form -->
+			<!-- sidebar menu: : style can be found in sidebar.less -->
+			<ul class="sidebar-menu">
+				<li class="header">菜单</li>
+				
+				<li class="menu_dashboard"><a href="#/page/dashboard"><i class="fa fa-dashboard"></i> <span>首页</span></a></li>
+				
+				<li class="menu_product" th:if="${currentUser.admin}"><a href="#/page/product"><i class="fa fa-archive"></i>
+						<span>商品管理</span></a></li>
+						
+				<li class="menu_order"><a href="#/page/order"><i class="fa fa-file-archive-o"></i> <span>订单管理</span></a></li>
+
+				<li class="menu_management" th:if="${currentUser.admin||currentUser.shipper}">
+					<a href="#"> 
+						<i class="fa fa-cogs"></i> <span>系统管理</span> 
+						<span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i></span>
+					</a>
+					<ul class="treeview-menu">
+						<li class="menu_management_admin" th:if="${currentUser.admin}"><a href="#/page/admin"><i class="fa fa-circle-o"></i> <span>管理员管理</span></a>
+						</li>
+						<li class="menu_management_specification" th:if="${currentUser.admin}"><a
+							href="#/page/specification"><i class="fa fa-circle-o"></i> <span>商品规格管理</span></a></li>
+						<li class="menu_management_deliveryCenter" th:if="${currentUser.admin||currentUser.shipper}"><a
+							href="#/page/deliveryCenter"><i class="fa fa-circle-o"></i> <span>发货点管理</span></a></li>
+						<li class="menu_management_deliveryTemplate" th:if="${currentUser.admin||currentUser.shipper}"><a
+							href="#/page/deliveryTemplate"><i class="fa fa-circle-o"></i> <span>快递单模版</span></a></li>
+					</ul>
+				</li>
+
+				<li class="header">快捷入口</li>
+				<li class="menu_profile"><a href="#/page/profile"><i class="fa fa-address-card"></i> <span>个人设置</span></a></li>
+				<li class="menu_sms" th:if="${currentUser.admin}"><a href="#/page/sms"><i class="fa fa-send"></i> <span>短信发送</span></a>
+				</li>
+			</ul>
+		</section>
+		<!-- /.sidebar -->
+	</aside>
+
+</body>
+</html>

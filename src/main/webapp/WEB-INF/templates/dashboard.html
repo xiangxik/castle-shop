@@ -1,0 +1,54 @@
+<!doctype html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<section class="content-header">
+		<h1>
+			首页 <small>控制面板</small>
+		</h1>
+		<ol class="breadcrumb">
+			<li>
+				<a th:href="@{/dashboard}"><i class="fa fa-dashboard"></i> 首页</a>
+			</li>
+			<li class="active">控制面板</li>
+		</ol>
+	</section>
+
+	<section class="content">
+		<div class="row">
+			<div class="col-md-3 col-sm-6 col-xs-12">
+				<div class="info-box">
+					<span class="info-box-icon bg-aqua"><i class="fa fa-file-archive-o"></i></span>
+
+					<div class="info-box-content">
+						<span class="info-box-text">最近一周</span> <span class="info-box-text">新增订单数</span> <span class="info-box-number" th:text="${pendingOrderCount}">90</span>
+					</div>
+					<!-- /.info-box-content -->
+				</div>
+				<!-- /.info-box -->
+			</div>
+			<!-- /.col -->
+			<div class="col-md-3 col-sm-6 col-xs-12">
+				<div class="info-box">
+					<span class="info-box-icon bg-green"><i class="fa fa-file-archive-o"></i></span>
+
+					<div class="info-box-content">
+						<span class="info-box-text">最近一周</span> <span class="info-box-text">完成订单数</span> <span class="info-box-number" th:text="${completedOrderCount}">41,410</span>
+					</div>
+					<!-- /.info-box-content -->
+				</div>
+				<!-- /.info-box -->
+			</div>
+			<!-- /.col -->
+	</section>
+
+
+	<script type="text/javascript">
+		requirejs([ "domReady" ], function(ready) {
+			ready(function() {
+				activeMenu("dashboard");
+			});
+		});
+	</script>
+</body>
+</html>
+

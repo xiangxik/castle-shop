@@ -1,0 +1,332 @@
+<!doctype html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title th:text="${product.seoTitle}"></title>
+<meta name="keywords" th:content="${product.seoKeywords}">
+<meta name="description" th:content="${product.seoDescription}">
+
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<link rel="stylesheet" href=http://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css />
+<link rel="stylesheet" th:href="@{/assets/weui/style/weui.css}" />
+<link rel="stylesheet" th:href="@{/assets/weui/style/weui2.css}" />
+<link rel="stylesheet" th:href="@{/assets/weui/style/weui3.css}" />
+<style type="text/css">
+.f-gray {
+	color: #8c8c8c;
+}
+.weui-label.selected {
+	border: 1px solid #ff7f0d;
+	color: #ff7f0d;
+}
+.weui-label.locked {
+	color: #ddd;
+	border: 1px dotted #ccc;
+}
+#slide-header.slide::after {
+	padding-top: 100%;
+}
+.required-tip {
+	color: red;
+}
+</style>
+<script th:src="@{/assets/weui/zepto.min.js}"></script>
+<script th:src="@{/assets/weui/swipe.js}"></script>
+<script type="text/javascript">
+	$(function() {
+		$('#slide-header').swipeSlide({
+			autoSwipe : true,//自动切换默认是
+			speed : 3000,//速度默认4000
+			continuousScroll : true,//默认否
+			transitionType : 'cubic-bezier(0.22, 0.69, 0.72, 0.88)',//过渡动画linear/ease/ease-in/ease-out/ease-in-out/cubic-bezier
+			lazyLoad : true,//懒加载默认否
+			firstCallback : function(i, sum, me) {
+				me.find('.dot').children().first().addClass('cur');
+			},
+			callback : function(i, sum, me) {
+				me.find('.dot').children().eq(i).addClass('cur').siblings().removeClass('cur');
+			}
+		});
+	});
+</script>
+</head>
+<body ontouchstart class="page-bg" th:object="${product}">
+	<div class="slide" id="slide-header">
+		<ul>
+			<li th:each="productImage:*{productImages}">
+				<a href="javascript:;"> <img th:src="${productImage.source}" th:alt="${productImage.title}">
+				</a>
+				<div class="slide-desc" th:text="${productImage.title}"></div>
+			</li>
+		</ul>
+		<div class="dot">
+			<span th:each="productImage:*{productImages}"></span>
+		</div>
+	</div>
+
+	<div style="padding: 0 10px">
+		<h3 th:text="*{name}"></h3>
+		<h3 th:text="'¥ '+*{#numbers.formatDecimal(price, 0, 2)}" class="f-red" id="price"></h3>
+		<h4 class="f-gray">
+			市场价
+			<del id="marketPrice" th:text="'¥ '+*{#numbers.formatDecimal(marketPrice, 0, 2)}"></del>
+		</h4>
+
+		<table style="width: 100%; line-height: 32px; font-size: 14px; color: #8c8c8c;">
+			<tbody>
+				<tr>
+					<td style="width: 46px;">编号：</td>
+					<td colspan="3" th:text="*{sn}"></td>
+				</tr>
+				<tr th:each="specification : ${specifications}" class="specification">
+					<td style="width: 46px;" th:text="${specification.name}+'：'"></td>
+					<td colspan="3">
+						<div class="weui-label-list product-color">
+							<label class="weui-label" th:each="specificationValue : ${specification.specificationValues}" th:if="${allSpecificationValues!=null&&#sets.contains(allSpecificationValues, specificationValue)}" th:val="${specificationValue.id}" th:text="${specificationValue.name}">color</label>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td style="width: 46px;">快递：</td>
+					<td th:text="*{express}"></td>
+					<td style="width: 46px;">月销：</td>
+					<td th:text="*{monthSales}"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="weui-flex" style="background-color: #ebebeb; color: #8c8c8c; font-size: 14px;">
+		<div class="weui-flex-item">
+			<div class="placeholder" style="color: #8c8c8c;">
+				<i class="fa fa-check-circle-o f-red"></i>正品保证
+			</div>
+		</div>
+		<div class="weui-flex-item">
+			<div class="placeholder" style="color: #8c8c8c;">
+				<i class="fa fa-check-circle-o f-red"></i>破损保障
+			</div>
+		</div>
+		<div class="weui-flex-item">
+			<div class="placeholder" style="color: #8c8c8c;">
+				<i class="fa fa-check-circle-o f-red"></i>极速退款
+			</div>
+		</div>
+		<div class="weui-flex-item">
+			<div class="placeholder" style="color: #8c8c8c;">
+				<i class="fa fa-check-circle-o f-red"></i>七天退换
+			</div>
+		</div>
+	</div>
+
+	<div th:if="*{#lists.size(saleInfos)}>0" id="colee" style="overflow: hidden; height: 60px; width: 100%; font-size: 12px; color: #ff7f0d">
+		<div id="colee1">
+			<p style="text-align: center;" th:each="saleInfo : *{saleInfos}" th:text="${saleInfo.content}"></p>
+		</div>
+		<div id="colee2"></div>
+	</div>
+
+	<div class="weui_article" th:utext="*{introduction}" style="background-color: white; padding: 0 10px 10px;"></div>
+
+	<a name="me_booking" id="me_booking"></a>
+	<div class="weui_cells_title">填写订购信息</div>
+	<form class="weui_cells weui_cells_form" style="font-size: 14px;" th:action="@{/saveOrder}">
+		<input type="hidden" th:value="*{id}" name="productId" /> <input type="hidden" name="productSkuId" />
+		<div class="weui_cell">
+			<div class="weui_cell_hd">
+				<label class="weui_label"><i class="required-tip">*</i>姓名</label>
+			</div>
+			<div class="weui_cell_bd weui_cell_primary">
+				<input class="weui_input" type="text" name="name" required placeholder="请输入您的姓名" />
+			</div>
+		</div>
+		<div class="weui_cell">
+			<div class="weui_cell_hd">
+				<label class="weui_label"><i class="required-tip">*</i>手机号码</label>
+			</div>
+			<div class="weui_cell_bd weui_cell_primary">
+				<input class="weui_input" type="tel" required pattern="[0-9]{11}" maxlength="11" placeholder="输入联系的手机号码"
+					emptyTips="请输入手机号" name="mobile" notMatchTips="请输入正确的手机号">
+			</div>
+			<div class="weui_cell_ft">
+				<i class="weui_icon_warn"></i>
+			</div>
+		</div>
+		<div class="weui_cell">
+			<div class="weui_cell_hd">
+				<label class="weui_label"><i class="required-tip">*</i>地址</label>
+			</div>
+			<div class="weui_cell_bd weui_cell_primary">
+				<textarea class="weui_textarea" name="address" required placeholder="请输入您的收货地址" rows="3"></textarea>
+			</div>
+		</div>
+
+		<div class="weui_cell">
+			<div class="weui_cell_hd">
+				<label class="weui_label">留言</label>
+			</div>
+			<div class="weui_cell_bd weui_cell_primary">
+				<textarea class="weui_textarea" name="memo" placeholder="请输入留言" rows="3"></textarea>
+			</div>
+		</div>
+		<div style="padding: 4px; background-color: white;">
+			<a id="submitlink" href="javascript:;" class="weui_btn weui_btn_warn" style="color: white;">立即订购</a>
+		</div>
+	</form>
+
+	<br />
+	<div class="weui-footer weui-footer-fixed-bottom" style="bottom: 0">
+		<div style="padding: 4px; background-color: white;">
+			<a id="gotorder" href="#me_booking" class="weui_btn weui_btn_warn" style="color: white;">立即订购</a>
+		</div>
+	</div>
+
+	<script type="text/javascript" th:inline="javascript">
+		var base = /*[[${#httpServletRequest.getContextPath()}]]*/"";
+		var skuList = /*[[${skuList}]]*/{};
+	</script>
+	<script type="text/javascript">
+		$(window).scroll(function() {
+			show_meddiate_booking();
+		});
+		show_meddiate_booking();
+		function show_meddiate_booking() {
+			var v_scroll_top = $("body").scrollTop();
+			var v_btn_top = $('#me_booking').offset().top;
+
+			if (v_btn_top - v_scroll_top < 400) {
+				$("#gotorder").hide();
+			} else {
+				$("#gotorder").show();
+			}
+		}
+
+		var speed = 60;
+		var colee2 = document.getElementById("colee2");
+		var colee1 = document.getElementById("colee1");
+		var colee = document.getElementById("colee");
+		if(colee1) {
+			colee2.innerHTML = colee1.innerHTML; //克隆colee1为colee2
+		}
+		var scrollTop = -1;
+		function Marquee1() {
+			//当滚动至colee1与colee2交界时
+			if (scrollTop == colee.scrollTop) {
+				colee.scrollTop -= colee1.offsetHeight; //colee跳到最顶端
+			} else {
+				scrollTop = colee.scrollTop;
+				colee.scrollTop++;
+			}
+		}
+		if(colee) {
+			var MyMar1 = setInterval(Marquee1, speed)//设置定时器
+			//鼠标移上时清除定时器达到滚动停止的目的
+			//colee.onmouseover = function() {
+			//	clearInterval(MyMar1)
+			//}
+			//鼠标移开时重设定时器
+			//colee.onmouseout = function() {
+			//	MyMar1 = setInterval(Marquee1, speed)
+			//}
+		}
+		
+		var $form = $("form");
+		
+		var $specification = $(".specification");
+		var $specificationValue = $(".specification .weui-label-list .weui-label");
+		var $price = $("#price");
+		var $marketPrice = $("#marketPrice");
+		
+		// 规格值选择
+		$specificationValue.click(function() {
+			var $this = $(this);
+			if ($this.hasClass("locked")) {
+				return false;
+			}
+			$this.toggleClass("selected").siblings().removeClass("selected");
+			var selectedIds = new Array();
+			$specificationValue.filter(".selected").each(function(i) {
+				selectedIds[i] = $(this).attr("val");
+			});
+			var locked = true;
+			$.each(skuList, function(i, sku) {
+				if (sku.specificationValues.length == selectedIds.length && contains(sku.specificationValues, selectedIds)) {
+					//locked = false;
+					$price.text("￥ "+sku.price);
+					$marketPrice.text("￥ "+sku.marketPrice);
+					$form.find("input[name=productSkuId]").val(sku.id);
+					return false;
+				}
+			});
+			if (locked) {
+				lockSpecificationValue();
+			}
+			return false;
+		});
+		
+		// 锁定规格值
+		function lockSpecificationValue() {
+			var selectedIds = new Array();
+			$specificationValue.filter(".selected").each(function(i) {
+				selectedIds[i] = $(this).attr("val");
+			});
+			$specification.each(function() {
+				var $this = $(this);
+				var selectedId = $this.find("label.selected").attr("val");
+				var otherIds = $.grep(selectedIds, function(n, i) {
+					return n != selectedId;
+				});
+				$this.find("label").each(function() {
+					var $this = $(this);
+					otherIds.push($this.attr("val"));
+					var locked = true;
+					$.each(skuList, function(i, sku) {
+						if (contains(sku.specificationValues, otherIds)) {
+							locked = false;
+							return false;
+						}
+					});
+					if (locked) {
+						$this.addClass("locked");
+					} else {
+						$this.removeClass("locked");
+					}
+					otherIds.pop();
+				});
+			});
+		}
+		
+		// 判断是否包含
+		function contains(array, values) {
+			var contains = true;
+			for(i in values) {
+				if ($.inArray(values[i], array) < 0) {
+					contains = false;
+					break;
+				}
+			}
+			return contains;
+		}
+		
+		$form.form();
+		$("#submitlink").on("click", function() {
+			$form.validate(function(error) {
+				if (error) {
+
+				} else {
+					$.post($form.attr('action'), $form.serialize(), function(result) {
+						if (result.success) {
+							$.alert("稍后会有客服人员联系您，请耐心等待", "订购成功");
+						} else {
+							$.alert("提交失败", "提示");
+						}
+					});
+				}
+			});
+
+		});
+	</script>
+</body>
+</html>

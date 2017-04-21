@@ -1,0 +1,168 @@
+<!doctype html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<section class="content-header">
+		<h1>
+			短信发送 <small>短信列表</small>
+		</h1>
+		<ol class="breadcrumb">
+			<li>
+				<a href="javascript:;"><i class="fa fa-send"></i> 短信发送</a>
+			</li>
+			<li class="active">短信列表</li>
+		</ol>
+	</section>
+
+	<section class="content">
+
+		<div class="mailbox-controls">
+			<div class="btn-group btn-group-sm">
+				<a class="btn btn-primary" href="#/page/sms/send"> <i class="fa fa-plus"></i> 添加
+				</a> <a class="btn btn-danger" href="javascript:;" id="delete-button"> <i class="glyphicon glyphicon-remove"></i> 删除
+				</a>
+			</div>
+			<div class="btn-group btn-group-sm">
+				<button id="open-search-button" type="button" class="btn btn-primary">
+					<i class="fa fa-search"></i>
+				</button>
+				<button type="button" class="btn btn-warning" id="refresh-button">
+					<i class="fa fa-refresh"></i>
+				</button>
+			</div>
+		</div>
+
+		<div class="box box-success" id="search-panel">
+			<form id="search-form" class="form-search form-inline">
+				<div class="box-body">
+					<div class="form-group">
+						<label for="search-mobile" class="control-label">手机号码</label> <input class="form-control" id="search-mobile"
+							placeholder="请输入账号" name="mobile" type="text">
+					</div>
+					<button type="submit" class="btn btn-primary btn-sm" id="search-button">
+						<i class="fa fa-search"></i> 搜索
+					</button>
+				</div>
+			</form>
+		</div>
+
+		<div class="box box-primary">
+			<div class="box-body no-padding">
+				<table id="grid-sms" class="table table-hover">
+					<thead>
+						<tr>
+							<th data-column-id="id" data-type="string" data-identifier="true" data-visible="false">ID</th>
+							<th data-column-id="mobile">手机号码</th>
+							<th data-column-id="content" data-css-class="hidden-xs hidden-sm" data-header-css-class="hidden-xs hidden-sm">内容</th>
+							<th data-column-id="sendDate" data-converter="datetime">发送时间</th>
+							<th data-formatter="operatorName" data-css-class="hidden-xs hidden-sm" data-header-css-class="hidden-xs hidden-sm">操作人</th>
+							<th data-formatter="commands" data-css-class="command-column" data-width="80px" data-sortable="false"
+								data-align="center" data-header-align="center">操作</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+
+	</section>
+
+
+	<script type="text/javascript">
+		requirejs([ "domReady", "bootgrid" ], function(ready) {
+			ready(function() {
+				activeMenu("sms");
+
+				var deleteRow = function(grid, ids) {
+					$.confirm({
+						title : "确认信息",
+						content : "确定要删除吗？",
+						buttons : {
+							confirm : {
+								text : "确定",
+								action : function() {
+									$.post(base + "/sms/delete", {
+										ids : ids
+									}, function(resp) {
+										if (resp.success) {
+											$.alert({
+												title : "提示",
+												content : "操作成功",
+												buttons : {
+													ok : {
+														text : "确定"
+													}
+												}
+											});
+											grid.bootgrid("reload")
+										} else {
+											$.alert({
+												title : "提示",
+												content : resp.msg,
+												buttons : {
+													ok : {
+														text : "确定"
+													}
+												}
+											});
+										}
+									}, "json");
+								}
+							},
+							cancel : {
+								text : "取消"
+							}
+						}
+					});
+				};
+
+				var gridAdmin = $("#grid-sms").bootgrid({
+					url : base + "/sms/page",
+					post : function() {
+						var keyValues = $("#search-form").serialize();
+						return parseQueryString(keyValues);
+					},
+					formatters : {
+						"operatorName" : function(column, row) {
+							return row.operator ? row.operator.name : "";
+						},
+						"commands" : function(column, row) {
+							return "\
+			<div class=\"btn-group btn-group-sm\" data-row-id=\""+row.id+"\">\
+				<a class=\"btn btn-primary command-delete\" href=\"javascript:;\">\
+					<i class=\"glyphicon glyphicon-remove\"></i>\
+				</a>\
+			</div>";
+						}
+					}
+				});
+
+				gridAdmin.on("loaded.rs.jquery.bootgrid", function() {
+					var $table = $(this);
+					$table.find(".dropdown-toggle").dropdown();
+
+					$table.find(".command-delete").on("click", function(e) {
+						var entity_id = $(this).closest(".btn-group").data("row-id");
+						deleteRow($table, [ entity_id ]);
+					});
+				});
+
+				var refreshGrid = function() {
+					gridAdmin.bootgrid("reload");
+				}
+
+				$("#search-button").on("click", function() {
+					refreshGrid();
+					return false;
+				});
+				$("#refresh-button").on("click", function() {
+					refreshGrid();
+				});
+
+				$("#open-search-button").on("click", function() {
+					$("#search-panel").toggle('fast')
+				});
+			});
+		});
+	</script>
+</body>
+</html>
+

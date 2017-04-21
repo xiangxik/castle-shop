@@ -1,0 +1,185 @@
+<!doctype html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>快递单打印</title>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="http://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" th:href="@{/assets/adminlte/css/AdminLTE.min.css}">
+<link rel="stylesheet" th:href="@{/assets/adminlte/css/skins/skin-blue.min.css}">
+<link rel="stylesheet" th:href="@{/assets/adminlte/css/custom.css}">
+<style type="text/css" th:inline="css">
+.content {
+	margin: 4px;
+	min-height: 0px;
+    padding: 0px;
+	position: relative;
+	overflow: hidden;
+	box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.1);
+	-webkit-box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.1);
+	border: 1px solid #dde9f5;
+	width: [[${currentTemplate}==null?0:${currentTemplate.width}]]px;
+	height: [[${currentTemplate}==null?0:${currentTemplate.height}]]px;
+	background: url(/*[[${currentTemplate}==null?'':${currentTemplate.background}]]*/) 0px 0px no-repeat;
+}
+
+.content .item {
+	line-height: 20px;
+	float: left;
+	position: absolute;
+	overflow: hidden;
+	word-wrap: break-word;
+	color: #000000;
+	font-size: 12pt;
+}
+
+.content pre {
+	float: left;
+	background: transparent;
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+
+.content .item .resize {
+	display: none;
+}
+</style>
+<style type="text/css" media="print">
+.main-header {
+	display: none;
+}
+
+.content {
+	margin: 0px;
+	border: none;
+	margin-left: [[${currentTemplate}==null?0:${currentTemplate.offsetX}]]px;
+	margin-top: [[${currentTemplate}==null?0:${currentTemplate.offsetY}]]px;
+	background: none;
+}
+</style>
+<!--[if lt IE 9]>
+  <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+	<header class="main-header">
+		<nav class="navbar navbar-static-top" style="margin-left: 0;">
+			<div class="navbar-custom-menu" style="float: left">
+				<ul class="nav navbar-nav">
+					<li><a href="javascript:;" id="print"><i class="fa fa-print"></i> 打印 </a></li>
+					<li class="dropdown notifications-menu"><a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span
+							id="currentTemplate" th:data-value="${currentTemplate}==null?'':${currentTemplate.id}"
+							th:text="${currentTemplate}==null?'选择快递单模版':${currentTemplate.name}"></span>
+					</a>
+						<ul class="dropdown-menu" style="left: 0;">
+							<li>
+								<ul class="menu" id="templateMenu">
+									<li th:each="template : ${templates}"><a href="javascript:;" th:data-value="${template.id}"
+										th:text="${template.name}"> 顺丰</a></li>
+								</ul>
+							</li>
+						</ul></li>
+					<li class="dropdown notifications-menu"><a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span
+							id="currentCenter" th:data-value="${currentCenter}==null?'':${currentCenter.id}"
+							th:text="${currentCenter}==null?'选择发货点':${currentCenter.name}"></span>
+					</a>
+						<ul class="dropdown-menu" style="left: 0;">
+							<li>
+								<ul class="menu" id="centerMenu">
+									<li th:each="center : ${centers}"><a href="javascript:;" th:data-value="${center.id}"
+										th:text="${center.name}"> 顺丰</a></li>
+								</ul>
+							</li>
+						</ul></li>
+				</ul>
+			</div>
+		</nav>
+	</header>
+
+	<div class="content" th:utext="${content}"></div>
+
+	<script type="text/javascript" th:inline="javascript">
+		var base = /*[[${#httpServletRequest.getContextPath()}]]*/"";
+		var entityId = /*[[${entity.id}]]*/"";
+	</script>
+
+	<script type="text/javascript" src="http://cdn.staticfile.org/require.js/2.3.2/require.min.js"></script>
+
+	<script type="text/javascript">
+		requirejs.config({
+			paths : {
+				domReady : "http://cdn.staticfile.org/require-domReady/2.0.1/domReady.min",
+				jquery : "http://lib.sinaapp.com/js/jquery/2.2.4/jquery-2.2.4.min",
+				slimscroll : "http://cdnjs.cloudflare.com/ajax/libs/jQuery-slimScroll/1.3.8/jquery.slimscroll.min",
+				bootstrap : "http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min",
+				app : base + "/assets/adminlte/js/app.min",
+				utils : base + "/assets/adminlte/js/utils"
+			},
+			map : {
+				"*" : {
+					"css" : "http://cdn.staticfile.org/require-css/0.1.8/css.min.js"
+				}
+			},
+			shim : {
+				slimscroll : [ "jquery" ],
+				bootstrap : {
+					deps : [ "jquery" ],
+					exports : "bootstrap"
+				},
+				app : [ "bootstrap", "slimscroll", "utils" ]
+			}
+		});
+
+		requirejs([ "domReady", "jquery", "app" ], function(ready, $, demo) {
+			ready(function() {
+				var $templateMenu = $("#templateMenu");
+				var $centerMenu = $("#centerMenu");
+
+				var $currentTemplate = $("#currentTemplate");
+				var $currentCenter = $("#currentCenter");
+
+				function chooseMenu() {
+					var templateId = $currentTemplate.data("value");
+					var centerId = $currentCenter.data("value");
+					if (templateId && centerId && templateId != "" && centerId != "") {
+						window.location = base + "/order/print/" + entityId + "?template=" + templateId + "&center="
+								+ centerId;
+					}
+				}
+
+				$templateMenu.find("li>a").on("click", function() {
+					$currentTemplate.data("value", $(this).data("value"));
+					$currentTemplate.text($(this).text());
+					chooseMenu();
+				});
+				$centerMenu.find("li>a").on("click", function() {
+					$currentCenter.data("value", $(this).data("value"));
+					$currentCenter.text($(this).text());
+					chooseMenu();
+				});
+
+				$("#print").on("click", function() {
+					var templateId = $currentTemplate.data("value");
+					var centerId = $currentCenter.data("value");
+
+					if (!templateId || templateId == "") {
+						alert("请选择快递单模板")
+						return false;
+					}
+					if (!centerId || centerId == "") {
+						alert("请选择发货点");
+						return false;
+					}
+					window.print();
+					return false;
+				});
+			});
+		});
+	</script>

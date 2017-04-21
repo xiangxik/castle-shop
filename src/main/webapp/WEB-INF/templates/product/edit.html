@@ -1,0 +1,585 @@
+<!doctype html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<style type="text/css">
+.icheck.sv {
+	display: inline-block;
+	margin-right: 24px;
+}
+.init-hide {
+	display: none;
+}
+</style>
+</head>
+<body>
+	<section class="content-header">
+		<h1>
+			商品管理 <small th:text="(${entity.new}?'新建':'编辑')+'商品'"></small>
+		</h1>
+		<ol class="breadcrumb">
+			<li><a href="javascript:;"><i class="fa fa-archive"></i> 商品管理</a></li>
+			<li class="active" th:text="(${entity.new}?'新建':'编辑')+'商品'"></li>
+		</ol>
+	</section>
+
+	<section class="content">
+		<form id="form-product" class="form-horizontal" th:action="@{/product/save}" method="post" th:object="${entity}">
+			<input type="hidden" name="id" th:value="*{id}" /> <input type="hidden" name="productImageCount" value="" /> <input
+				type="hidden" name="saleInfoCount" value="" /> <input
+				type="hidden" name="skuCount" value="" />
+			<div class="nav-tabs-custom">
+				<ul class="nav nav-tabs">
+					<li class="active"><a href="#tab_info" data-toggle="tab">基本信息</a></li>
+					<li><a href="#tab_introduction" data-toggle="tab">商品介绍</a></li>
+					<li><a href="#tab_images" data-toggle="tab">商品图片</a></li>
+					<li><a href="#tab_sales" data-toggle="tab">购买信息</a></li>
+					<li><a href="#tab_skus" data-toggle="tab">商品规格</a></li>
+				</ul>
+				<div class="tab-content" style="min-height: 400px;">
+					<div class="tab-pane active" id="tab_info">
+						<div class="form-horizontal">
+							<div class="box-body">
+								<div class="form-group">
+									<label for="input-name" class="col-sm-2 control-label"><i class="required-tip">*</i>商品名称</label>
+
+									<div class="col-sm-10">
+										<input class="form-control" id="input-name" name="name" th:value="*{name}" placeholder="请输入商品名称" type="text"
+											data-bv-notempty="true" data-bv-notempty-message="请填写商品名称">
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="input-sn" class="col-sm-2 control-label"><i class="required-tip">*</i>商品编号</label>
+
+									<div class="col-sm-10">
+										<input class="form-control" id="input-sn" name="sn" th:value="*{sn}" placeholder="请输入商品编号" type="text"
+											data-bv-notempty="true" data-bv-notempty-message="请填写商品编号">
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="input-price" class="col-sm-2 control-label"><i class="required-tip">*</i>销售价</label>
+
+									<div class="col-sm-10">
+										<input class="form-control" id="input-price" name="price" th:value="*{#numbers.formatDecimal(price, 0, 2)}"
+											placeholder="请输入销售价" type="text" data-bv-notempty="true" data-bv-notempty-message="请填写销售价"
+											data-bv-numeric="true" data-bv-numeric-message="请输入是数值">
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="input-marketPrice" class="col-sm-2 control-label"><i class="required-tip">*</i>市场价</label>
+
+									<div class="col-sm-10">
+										<input class="form-control" id="input-marketPrice" name="marketPrice"
+											th:value="*{#numbers.formatDecimal(marketPrice, 0, 2)}" placeholder="请输入市场价" type="text"
+											data-bv-notempty="true" data-bv-notempty-message="请填写市场价" data-bv-numeric="true" data-bv-numeric-message="请输入是数值">
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label for="input-express" class="col-sm-2 control-label">快递</label>
+
+									<div class="col-sm-10">
+										<input class="form-control" id="input-express" name="express" th:value="*{express}" placeholder="请输入快递"
+											type="text">
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="input-monthSales" class="col-sm-2 control-label">月销量</label>
+
+									<div class="col-sm-10">
+										<input class="form-control" id="input-monthSales" name="monthSales" th:value="*{monthSales}"
+											placeholder="请输入月销量" type="text">
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-sm-2 control-label">默认显示</label>
+
+									<div class="col-sm-10">
+										<div class="checkbox icheck">
+											<label> <input type="checkbox" name="defaultShow" th:checked="*{defaultShow}"><input
+												type="hidden" name="_defaultShow" />
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label">上架</label>
+
+									<div class="col-sm-10">
+										<div class="checkbox icheck">
+											<label> <input type="checkbox" name="isMarketable" th:checked="*{isMarketable}"><input
+												type="hidden" name="_isMarketable" />
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="input-seoTitle" class="col-sm-2 control-label">页面标题</label>
+
+									<div class="col-sm-10">
+										<input class="form-control" id="input-seoTitle" name="seoTitle" th:value="*{seoTitle}" placeholder="请输入页面标题"
+											type="text">
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="input-seoKeywords" class="col-sm-2 control-label">页面关键字</label>
+
+									<div class="col-sm-10">
+										<input class="form-control" id="input-seoKeywords" name="seoKeywords" th:value="*{seoKeywords}"
+											placeholder="请输入页面关键字" type="text">
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="input-seoDescription" class="col-sm-2 control-label">页面描述</label>
+
+									<div class="col-sm-10">
+										<input class="form-control" id="input-seoDescription" name="seoDescription" th:value="*{seoDescription}"
+											placeholder="请输入页面描述" type="text">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane" id="tab_introduction">
+						<textarea class="gui-textarea editor" style="width: 100%" name="introduction" th:utext="*{introduction}"></textarea>
+					</div>
+					<div class="tab-pane" id="tab_images">
+						<div class="box-header">
+							<h3 class="box-title">轮播图片</h3>
+
+							<div class="box-tools">
+								<div class="btn-group btn-group-sm">
+									<a id="button-images-add" class="btn btn-primary" href="javascript:;"> <i class="fa fa-plus"></i> 添加
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="box-body no-padding">
+							<table id="table-images" class="table table-bordered">
+								<thead>
+									<tr>
+										<th>上传图片</th>
+										<th style="width: 160px">图片标题</th>
+										<th style="width: 160px">排序号</th>
+										<th class="text-center command-column" style="width: 100px">操作</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="productImage : *{productImages}">
+										<td><input type="file" class="file-loading" name="file"> <input type="hidden" name="source"
+											th:value="${productImage.source}"></td>
+										<td><input class="form-control" name="title" th:value="${productImage.title}" placeholder="请输入图片标题"
+											type="text"></td>
+										<td><input class="form-control" name="sortNo" th:value="${productImage.sortNo}" placeholder="请输入排序号"
+											type="text"></td>
+										<td class="text-center command-column">
+											<div class="btn-group btn-group-sm">
+												<a class="btn btn-primary" href="javascript:;"
+													onclick="window.open($(this).closest('tr').find('input[name=source]').val());"> <i class="fa fa-eye"></i>
+												</a> <a class="btn btn-primary" href="javascript:;" onclick="$(this).closest('tr').remove();"> <i
+													class="glyphicon glyphicon-remove"></i>
+												</a>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<!-- /.box-body -->
+					</div>
+					<div class="tab-pane" id="tab_sales">
+						<div class="box-header">
+							<h3 class="box-title">滚动的购买信息</h3>
+
+							<div class="box-tools">
+								<div class="btn-group btn-group-sm">
+									<a id="button-saleInfos-add" class="btn btn-primary" href="javascript:;"> <i class="fa fa-plus"></i> 添加
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="box-body no-padding">
+							<table id="table-sales" class="table table-bordered">
+								<thead>
+									<tr>
+										<th>内容</th>
+										<th style="width: 160px">排序号</th>
+										<th class="text-center command-column" style="width: 60px">操作</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="saleInfo : *{saleInfos}">
+										<td><input class="form-control" name="content" placeholder="请输入内容" th:value="${saleInfo.content}"
+											type="text"></td>
+										<td><input class="form-control" name="sortNo" placeholder="请输入排序号" th:value="${saleInfo.sortNo}"
+											type="text"></td>
+										<td class="text-center command-column">
+											<div class="btn-group btn-group-sm">
+												<a class="btn btn-primary" href="javascript:;" onclick="$(this).closest('tr').remove();"> <i
+													class="glyphicon glyphicon-remove"></i>
+												</a>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="tab-pane" id="tab_skus">
+						<div class="box-header">
+							<div class="box-title">选择商品规格</div>
+						</div>
+						<div class="box-body no-padding">
+							<div id="specificationSelect" class="form-control" style="height: auto; min-height: 80px;">
+								<div class="checkbox icheck sv" th:each="specification : ${specifications}">
+									<label> <input type="checkbox" th:checked="${#lists.contains(entity.specifications, specification)}" name="specifications" th:value="${specification.id}" > <span th:text="${specification.name}+(${specification.memo}==''?'':(' ['+${specification.memo}+']'))"></span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="box-header">
+							<div class="box-title">
+								<div class="btn-group btn-group-sm">
+									<a id="button-specificationValues-add" class="btn btn-primary" href="javascript:;"> <i class="fa fa-plus"></i>
+										增加规格商品
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="box-body no-padding">
+							<table id="specificationProductTable" class="table table-bordered">
+								<thead>
+									<tr>
+										<th th:each="specification : ${specifications}" th:class="'init-hide specification_'+${specification.id}" th:text="${specification.name}"></th>
+										<th><i class="required-tip">*</i>销售价格</th>
+										<th><i class="required-tip">*</i>市场价格</th>
+										<th class="text-center command-column" style="width: 100px">操作</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr class="init-hide">
+										<td th:each="specification : ${specifications}" th:class="'init-hide specification_'+${specification.id}">
+											<select name="specificationValues" class="form-control" disabled="disabled">
+												<option th:each="specificationValue : ${specification.specificationValues}" th:value="${specificationValue.id}" th:text="${specificationValue.name}"></option>
+											</select>
+										</td>
+										<td>
+											<input class="form-control" name="price1" placeholder="请输入销售价" type="text">
+										</td>
+										<td>
+											<input class="form-control" name="marketPrice1" placeholder="请输入市场价" type="text">
+										</td>
+										<td class="text-center command-column">
+											<div class="btn-group btn-group-sm">
+												<a class="btn btn-primary" href="javascript:;" onclick="$(this).closest('tr').remove();"> <i
+													class="glyphicon glyphicon-remove"></i>
+												</a>
+											</div>
+										</td>
+									</tr>
+									<tr th:each="sku : *{productSkus}">
+										<td th:each="specification : ${specifications}" th:class="'init-hide specification_'+${specification.id}">
+											<select name="specificationValues" class="form-control" disabled="disabled">
+												<option th:each="specificationValue : ${specification.specificationValues}" th:selected="${#lists.contains(sku.specificationValues, specificationValue)}" 
+													th:value="${specificationValue.id}" th:text="${specificationValue.name}"></option>
+											</select>
+										</td>
+										<td>
+											<input type="hidden" name="id" th:value="${sku.id}">
+											<input class="form-control" name="price1" th:value="${#numbers.formatDecimal(sku.price, 0, 2)}" placeholder="请输入销售价" type="text">
+										</td>
+										<td>
+											<input class="form-control" name="marketPrice1" th:value="${#numbers.formatDecimal(sku.marketPrice, 0, 2)}" placeholder="请输入市场价" type="text">
+										</td>
+										<td class="text-center command-column">
+											<div class="btn-group btn-group-sm">
+												<a class="btn btn-primary" href="javascript:;" onclick="$(this).closest('tr').remove();"> <i
+													class="glyphicon glyphicon-remove"></i>
+												</a>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<!-- /.tab-content -->
+				<div class="box-footer">
+					<button type="button" class="btn btn-default" onclick="location.href='#/page/product'">返回列表</button>
+					<button type="submit" class="btn btn-success pull-right">保存</button>
+				</div>
+			</div>
+		</form>
+	</section>
+
+
+	<script type="text/javascript">
+		requirejs(
+				[ "domReady", "validator", "icheck", "fileinput", "kindeditor" ],
+				function(ready) {
+					ready(function() {
+						activeMenu("product");
+
+						$(".icheck input").iCheck({
+							checkboxClass : 'icheckbox_square-blue',
+							radioClass : 'iradio_square-blue',
+							increaseArea : '20%' // optional
+						});
+
+						var initFileInput = function(element) {
+							element.fileinput({
+								uploadUrl : base + "/multipart/upload/image",
+								language : "zh",
+								initialCaption : element.closest("td").children("input[type=hidden]").val(),
+								showPreview : false,
+								multiple : false,
+								showUpload : false, // hide upload button
+								showRemove : false, // hide remove button
+								minFileCount : 1,
+								maxFileCount : 1,
+								allowedFileTypes : [ "image" ],
+								maxFileSize : 200 * 1024 * 1024
+							}).on("filebatchselected", function(event, files) {
+								$(this).fileinput("upload");
+							}).on('fileuploaded', function(event, data, previewId, index) {
+								response = data.response;
+								if (response.success) {
+									$(this).closest("td").children("input[type=hidden]").val(response.urls);
+								}
+							});
+						}
+
+						$.each($("#table-images input[type=file]"), function(i, item) {
+							var $item = $(item);
+							initFileInput($item);
+						});
+
+						$("#button-images-add")
+								.on(
+										"click",
+										function() {
+											var $tr = $("<tr />");
+											var $td1 = $("<td />");
+											var $td2 = $("<td />");
+											var $td3 = $("<td />");
+											var $td4 = $("<td />").addClass("text-center").addClass("command-column");
+
+											var $file = $("<input type=\"file\" class=\"file-loading\" name=\"file\">");
+											var $file_hidden = $("<input type=\"hidden\" name=\"source\">");
+											$td1.append($file).append($file_hidden);
+
+											var $input_title = $("<input class=\"form-control\" name=\"title\" placeholder=\"请输入图片标题\" type=\"text\">");
+											$td2.append($input_title);
+
+											var $input_sort = $("<input class=\"form-control\" name=\"sortNo\" placeholder=\"请输入排序号\" type=\"text\">");
+											$td3.append($input_sort);
+
+											var $link_del = $("<a class=\"btn btn-primary btn-sm\" href=\"javascript:;\"> <i class=\"glyphicon glyphicon-remove\"></i></a>")
+											$td4.append($link_del);
+
+											$tr.append($td1).append($td2).append($td3).append($td4);
+											$("#table-images>tbody").append($tr);
+
+											initFileInput($file);
+											$link_del.on("click", function() {
+												$(this).closest('tr').remove();
+											});
+										});
+
+						$("#button-saleInfos-add")
+								.on(
+										"click",
+										function() {
+											var $tr = $("<tr />");
+											var $td1 = $("<td />");
+											var $td2 = $("<td />");
+											var $td3 = $("<td />").addClass("text-center").addClass("command-column");
+
+											var $input_content = $("<input class=\"form-control\" name=\"content\" placeholder=\"请输入内容\" type=\"text\">");
+											$td1.append($input_content);
+
+											var $input_sort = $("<input class=\"form-control\" name=\"sortNo\" placeholder=\"请输入排序号\" type=\"text\">");
+											$td2.append($input_sort);
+
+											var $link_del = $("<a class=\"btn btn-primary btn-sm\" href=\"javascript:;\"> <i class=\"glyphicon glyphicon-remove\"></i></a>")
+											$td3.append($link_del);
+
+											$tr.append($td1).append($td2).append($td3);
+											$("#table-sales>tbody").append($tr);
+
+											$link_del.on("click", function() {
+												$(this).closest('tr').remove();
+											});
+										});
+
+						var editor = KindEditor.create('#form-product .editor', {
+							langType : "zh-CN",
+							uploadJson : base + "/kindeditor/upload",
+							fileManagerJson : base + "/kindeditor/list",
+							allowFileManager : true,
+							wellFormatMode : true,
+							newlineTag : "p",
+							minHeight : 400,
+							resizeType : 1,
+							imageSizeLimit : '10MB',
+							imageUploadLimit : 100
+						});
+						
+						var $specificationIds = $("#specificationSelect :checkbox");
+						var $specificationProductTable = $("#specificationProductTable");
+						var $addSpecificationProduct = $("#button-specificationValues-add");
+						
+						var specificationChange = function(checkbox) {
+							if ($specificationIds.filter(":checked").size() == 0) {
+								$specificationProductTable.find("tr:gt(1)").remove();
+							}
+							var $this = $(checkbox);
+							if ($this.prop("checked")) {
+								$specificationProductTable.find("th.specification_" + $this.val()).show();
+								$specificationProductTable.find("td.specification_" + $this.val()).show().find("select").prop("disabled", false);
+							} else {
+								$specificationProductTable.find("th.specification_" + $this.val()).hide();
+								$specificationProductTable.find("td.specification_" + $this.val()).hide().find("select").prop("disabled", true);
+							}
+						};
+						
+						$.each($specificationIds, function(i, item) {
+							specificationChange(item);
+						});
+						
+						$specificationIds.on("ifChanged",function() {
+							specificationChange(this);
+						});
+						
+						$addSpecificationProduct.on("click", function() {
+							if ($specificationIds.filter(":checked").size() == 0) {
+								$.alert({
+									title : false,
+									content : "必须至少选择一个规格"
+								});
+								return false;
+							}
+							$specificationProductTable.find("tr:eq(1)").clone().show().appendTo($specificationProductTable);
+						});
+
+						$("#form-product").bootstrapValidator().on(
+								"success.form.bv",
+								function(e) {
+									e.preventDefault();
+									var $form = $(e.target);
+									
+									var isBlank = false;
+									var isRepeats = false;
+									var parameters = new Array();
+									$specificationProductTable.find("tr:gt(1)").each(function() {
+										var $this = $(this);
+										var price1 = $this.find("input[name=price1]").val();
+										var marketPrice1 = $this.find("input[name=marketPrice1]").val();
+										if($.trim(price1)==""||$.trim(marketPrice1)=="") {
+											isBlank = true;
+											return false;
+										}
+										
+										var parameter = $this.find("select").serialize();
+										if ($.inArray(parameter, parameters) >= 0) {
+											
+											isRepeats = true;
+											return false;
+										} else {
+											parameters.push(parameter);
+										}
+									});
+									if(isBlank) {
+										$form.bootstrapValidator('disableSubmitButtons', false);
+										$.alert({
+											title : false,
+											content : "规格商品的销售价格和市场价格不能为空"
+										});
+										return false;
+									}
+									if(isRepeats) {
+										$form.bootstrapValidator('disableSubmitButtons', false);
+										$.alert({
+											title : false,
+											content : "规格商品不能重复"
+										});
+										return false;
+									}
+									
+									var bv = $form.data('bootstrapValidator');
+
+									var productImageCount = 0;
+									$.each($("#table-images>tbody>tr"), function(i, tr) {
+										var $tr = $(tr);
+										$tr.find("input[name=source]").attr("name", "productImages[" + i + "].source");
+										$tr.find("input[name=title]").attr("name", "productImages[" + i + "].title");
+										$tr.find("input[name=sortNo]").attr("name", "productImages[" + i + "].sortNo");
+										productImageCount++;
+									});
+									$form.find("input[name=productImageCount]").val(productImageCount);
+
+									var saleInfoCount = 0;
+									$.each($("#table-sales>tbody>tr"), function(i, tr) {
+										var $tr = $(tr);
+										$tr.find("input[name=content]").attr("name", "saleInfos[" + i + "].content");
+										$tr.find("input[name=sortNo]").attr("name", "saleInfos[" + i + "].sortNo");
+										saleInfoCount++;
+									});
+									$form.find("input[name=saleInfoCount]").val(saleInfoCount);
+									
+									var skuCount = 0;
+									$.each($specificationProductTable.find("tbody>tr"), function(i, tr) {
+										if(i>0) {
+											var $tr = $(tr);
+											$tr.find("select[name=specificationValues]").attr("name", "productSkus[" + (i-1) + "].specificationValues");
+											$tr.find("input[name=id]").attr("name", "productSkus[" + (i-1) + "].id");
+											$tr.find("input[name=price1]").attr("name", "productSkus[" + (i-1) + "].price");
+											$tr.find("input[name=marketPrice1]").attr("name", "productSkus[" + (i-1) + "].marketPrice");
+											skuCount++;
+										}
+									});
+									$form.find("input[name=skuCount]").val(skuCount);
+									
+									$specificationProductTable.find("tr:eq(1)").find("select").prop("disabled", true);
+									$specificationProductTable.find("tr:eq(1)").find("input").prop("disabled", true);
+
+									$.post($form.attr('action'), $form.serialize(), function(result) {
+										$form.find(".form-control").next("small").remove();
+										if (result.success) {
+											$.alert({
+												title : false,
+												content : "保存成功",
+												buttons : {
+													ok : {
+														text : "返回列表",
+														action : function() {
+															location.href = "#/page/product";
+														}
+													}
+												}
+											});
+										} else {
+											if (result.code == "validateError") {
+												$.each(result.data, function(i, error) {
+													if (error.field) {
+														$form.find(".form-control[name=" + error.field + "]").after(
+																"<small>" + error.defaultMessage + "</small>");
+													}
+												});
+											}
+											$.alert({
+												title : false,
+												content : result.msg
+											});
+
+											$form.bootstrapValidator('disableSubmitButtons', false);
+										}
+									}, "json");
+								});
+					});
+				});
+	</script>
+</body>
+</html>
+

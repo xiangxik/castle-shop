@@ -1,0 +1,308 @@
+<!doctype html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<section class="content-header">
+		<h1>
+			订单管理 <small>编辑订单</small>
+		</h1>
+		<ol class="breadcrumb">
+			<li><a href="javascript:;"><i class="fa fa-file-archive-o"></i>
+					订单管理</a></li>
+			<li class="active">编辑订单</li>
+		</ol>
+	</section>
+
+	<section class="content">
+		<div class="box box-primary">
+			<div class="box-header with-border">
+				<h3 class="box-title">订单信息</h3>
+			</div>
+			<div id="form-view" class="form-horizontal" th:object="${entity}">
+				<input type="hidden" name="id" th:value="*{id}" />
+				<div class="box-body">
+					<div class="form-group">
+						<label for="input-sn" class="col-sm-2 control-label">订单编号</label>
+
+						<div class="col-sm-10">
+							<span class="form-control" th:text="*{sn}"></span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="input-sn" class="col-sm-2 control-label">商品</label>
+
+						<div class="col-sm-10">
+							<span class="form-control" th:text="'['+*{product.sn}+'] '+*{product.name}"></span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="input-specification" class="col-sm-2 control-label">商品规格</label>
+
+						<div class="col-sm-10">
+							<span class="form-control" th:text="*{specification}"></span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="input-amount" class="col-sm-2 control-label">订单金额</label>
+
+						<div class="col-sm-10">
+							<span class="form-control"
+								th:text="*{#numbers.formatDecimal(amount, 0, 2)}"></span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="input-orderStatus" class="col-sm-2 control-label">订单状态</label>
+
+						<div class="col-sm-10">
+							<span class="form-control" th:inline="text"
+								th:if="${!allowModifyOrderStatus}">
+								[[*{orderStatus}=='pending'?'待处理':'']]
+								[[*{orderStatus}=='inhand'?'处理中':'']]
+								[[*{orderStatus}=='confirmed'?'已确认':'']]
+								[[*{orderStatus}=='followup'?'待跟进':'']]
+								[[*{orderStatus}=='canceled'?'已取消':'']]
+								[[*{orderStatus}=='completed'?'已完成':'']] </span>
+							<div class="dropdown form-control"
+								th:if="${allowModifyOrderStatus}">
+								<a id="orderStatusLabel" class="dropdown-toggle" data-target="#"
+									role="button" data-toggle="dropdown" aria-haspopup="true"
+									aria-expanded="false"> <span th:inline="text"
+									id="orderStatusSpan">
+										[[*{orderStatus}=='pending'?'待处理':'']]
+										[[*{orderStatus}=='inhand'?'处理中':'']]
+										[[*{orderStatus}=='confirmed'?'已确认':'']]
+										[[*{orderStatus}=='followup'?'待跟进':'']]
+										[[*{orderStatus}=='canceled'?'已取消':'']]
+										[[*{orderStatus}=='completed'?'已完成':'']]</span> <span class="caret"></span>
+								</a>
+								<ul class="dropdown-menu" aria-labelledby="orderStatusLabel">
+									<li><a th:if="${currentUser.admin}" href="javascript:;"
+										class="row-order-status" data-value="pending"> 待处理 </a></li>
+									<li><a href="javascript:;" class="row-order-status"
+										data-value="inhand"> 处理中 </a></li>
+									<li><a href="javascript:;" class="row-order-status"
+										data-value="confirmed"> 已确认 </a></li>
+									<li><a href="javascript:;" class="row-order-status"
+										data-value="followup"> 待跟进 </a></li>
+									<li><a href="javascript:;" class="row-order-status"
+										data-value="canceled"> 已取消 </a></li>
+									<li><a href="javascript:;" class="row-order-status"
+										data-value="completed"> 已完成 </a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="input-shippingStatus" class="col-sm-2 control-label">发货状态</label>
+
+						<div class="col-sm-10">
+							<span class="form-control" th:inline="text"
+								th:if="${!allowModifyShippingStatus}">
+								[[*{shippingStatus}=='unshipped'?'未发货':'']]
+								[[*{shippingStatus}=='shipped'?'已发货':'']]
+								[[*{shippingStatus}=='received'?'已收货':'']]
+								[[*{shippingStatus}=='returned'?'已退回':'']] </span>
+							<div class="dropdown form-control"
+								th:if="${allowModifyShippingStatus}">
+								<a id="shippingStatusLabel" class="dropdown-toggle"
+									data-target="#" role="button" data-toggle="dropdown"
+									aria-haspopup="true" aria-expanded="false"> <span
+									th:inline="text" id="shippingStatusSpan">
+										[[*{shippingStatus}=='unshipped'?'未发货':'']]
+										[[*{shippingStatus}=='shipped'?'已发货':'']]
+										[[*{shippingStatus}=='received'?'已收货':'']]
+										[[*{shippingStatus}=='returned'?'已退回':'']] </span> <span
+									class="caret"></span>
+								</a>
+								<ul class="dropdown-menu" aria-labelledby="shippingStatusLabel">
+									<li><a href="javascript:;" class="row-shipping-status"
+										data-value="unshipped"> 未发货 </a></li>
+									<li><a href="javascript:;" class="row-shipping-status"
+										data-value="shipped"> 已发货 </a></li>
+									<li><a href="javascript:;" class="row-shipping-status"
+										data-value="received"> 已收货 </a></li>
+									<li><a href="javascript:;" class="row-shipping-status"
+										data-value="returned"> 已退回 </a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="input-consignee" class="col-sm-2 control-label">客户姓名</label>
+
+						<div class="col-sm-10">
+							<span class="form-control" th:text="*{consignee}"></span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="input-phone" class="col-sm-2 control-label">联系电话</label>
+
+						<div class="col-sm-10">
+							<span class="form-control" th:text="*{phone}"></span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="input-address" class="col-sm-2 control-label">收货地址</label>
+
+						<div class="col-sm-10">
+							<span class="form-control" th:text="*{address}"></span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="input-memo" class="col-sm-2 control-label">客户留言</label>
+
+						<div class="col-sm-10">
+							<span class="form-control" th:text="*{memo}"></span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="input-remark" class="col-sm-2 control-label">订单备注</label>
+
+						<div class="col-sm-10">
+							<span class="form-control" th:text="*{remark}"></span>
+						</div>
+					</div>
+					<div class="form-group" th:if="*{operator}!=null">
+						<label for="input-sn" class="col-sm-2 control-label">销售人员</label>
+
+						<div class="col-sm-10">
+							<span class="form-control" th:text="*{operator.name}"></span>
+						</div>
+					</div>
+					<div class="form-group" th:if="*{shipper}!=null">
+						<label for="input-sn" class="col-sm-2 control-label">发货人员</label>
+
+						<div class="col-sm-10">
+							<span class="form-control" th:text="*{shipper.name}"></span>
+						</div>
+					</div>
+				</div>
+				<div class="box-footer">
+					<button type="button" class="btn btn-default"
+						onclick="location.href='#/page/order'">返回列表</button>
+					<a th:href="@{/order/print/}+*{id}" target="_blank" class="btn btn-primary pull-right"><i class="fa fa-print"></i> 打印</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script type="text/javascript" th:inline="javascript">
+		var orderId = /*[[${entity.id}]]*/"";
+	</script>
+
+	<script type="text/javascript">
+		requirejs([ "domReady" ],
+				function(ready) {
+					ready(function() {
+						activeMenu("order");
+
+						var changeOrderStatusRow = function(status) {
+							if (confirm("确定要修改订单状态吗？")) {
+								$.get(base + "/order/orderStatus/" + orderId, {
+									orderStatus : status
+								}, function(resp) {
+									if (resp.success) {
+										$.alert({
+											title : false,
+											content : "操作成功"
+										});
+										var text = "新订单";
+										switch (status) {
+										case "pending":
+											text = "待处理";
+											break;
+										case "inhand":
+											text = "处理中";
+											break;
+										case "confirmed":
+											text = "已确认";
+											break;
+										case "followup":
+											text = "待跟进";
+											break;
+										case "canceled":
+											text = "已取消";
+											break;
+										case "completed":
+											text = "已完成";
+											break;
+
+										default:
+											break;
+										}
+										$("#orderStatusSpan").text(text);
+									} else {
+										$.alert({
+											title : false,
+											content : resp.msg
+										});
+									}
+								}, "json");
+							}
+						};
+
+						var changeShippingStatusRow = function(status) {
+							if (confirm("确定要修改发货状态吗？")) {
+								$.get(
+										base + "/order/shippingStatus/"
+												+ orderId, {
+											shippingStatus : status
+										}, function(resp) {
+											if (resp.success) {
+												$.alert({
+													title : false,
+													content : "操作成功"
+												});
+												var text = "未发货";
+												switch (status) {
+												case "unshipped":
+													text = "未发货";
+													break;
+												case "shipped":
+													text = "已发货";
+													break;
+												case "received":
+													text = "已收货";
+													break;
+												case "returned":
+													text = "已退回";
+													break;
+												default:
+													break;
+												}
+												$("#shippingStatusSpan").text(
+														text);
+											} else {
+												$.alert({
+													title : false,
+													content : resp.msg
+												});
+											}
+										}, "json");
+							}
+						};
+
+						$("#form-view").find(".row-order-status")
+								.on(
+										"click",
+										function() {
+											var order_id = $(this)
+													.closest("ul").data(
+															"row-id");
+											changeOrderStatusRow($(this).data(
+													"value"));
+										});
+						$("#form-view").find(".row-shipping-status").on(
+								"click",
+								function() {
+									var order_id = $(this).closest("ul").data(
+											"row-id");
+									changeShippingStatusRow($(this).data(
+											"value"));
+								});
+
+					});
+				});
+	</script>
+</body>
+</html>
+
