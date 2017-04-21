@@ -78,6 +78,10 @@ public class IndexController {
 
 	@RequestMapping(value = "/p/{product}", method = RequestMethod.GET)
 	public String p(@PathVariable("product") Product product, Model model) {
+		if(product == null) {
+			return "/no_product";
+		}
+		
 		model.addAttribute("product", product);
 
 		model.addAttribute("specifications", product.getSpecifications());
