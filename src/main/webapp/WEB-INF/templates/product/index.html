@@ -140,7 +140,7 @@
 											},
 											formatters : {
 												"productName" : function(column, row) {
-													return row.name + " " + (row.defaultShow ? "<span style='color:red'>[首页]</span>" : "") + (row.isMarketable ? "<span style='color:red'>[上架]</span>" : "");
+													return row.name + " " + (row.defaulted ? "<span style='color:red'>[首页]</span>" : "") + (row.isMarketable ? "<span style='color:red'>[上架]</span>" : "");
 												},
 												"lastModifiedByName" : function(column, row) {
 													return row.lastModifiedBy ? row.lastModifiedBy.name : "";

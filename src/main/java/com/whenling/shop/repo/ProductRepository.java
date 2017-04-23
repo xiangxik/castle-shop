@@ -7,7 +7,8 @@ import com.whenling.castle.repo.jpa.BaseJpaRepository;
 import com.whenling.shop.entity.Product;
 import com.whenling.shop.entity.QProduct;
 
-public interface ProductRepository extends BaseJpaRepository<Product, Long>, QuerydslBinderCustomizer<QProduct> {
+public interface ProductRepository
+		extends BaseJpaRepository<Product, Long>, QuerydslBinderCustomizer<QProduct>, ProductRepositoryCustom {
 
 	@Override
 	default void customize(QuerydslBindings bindings, QProduct root) {

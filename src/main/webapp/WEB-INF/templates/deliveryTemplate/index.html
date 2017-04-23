@@ -58,7 +58,7 @@
 							<th data-column-id="id" data-type="string" data-identifier="true" data-visible="false">ID</th>
 							<th data-column-id="name">名称</th>
 							<th data-column-id="memo" data-css-class="hidden-xs hidden-sm" data-header-css-class="hidden-xs hidden-sm">备注</th>
-							<th data-formatter="isDefault" data-width="80px" data-column-id="isDefault">默认</th>
+							<th data-formatter="defaulted" data-width="80px" data-column-id="defaulted">默认</th>
 							<th data-formatter="commands" data-css-class="command-column" data-width="120px" data-sortable="false"
 								data-align="center" data-header-align="center">操作</th>
 						</tr>
@@ -129,8 +129,8 @@
 												return parseQueryString(keyValues);
 											},
 											formatters : {
-												"isDefault" : function(column, row) {
-													return row.isDefault ? "是" : "否";
+												"defaulted" : function(column, row) {
+													return row.defaulted ? "是" : "否";
 												},
 												"commands" : function(column, row) {
 													return "\

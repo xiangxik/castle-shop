@@ -6,11 +6,12 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.whenling.castle.repo.domain.Defaultable;
 import com.whenling.castle.repo.jpa.DataEntity;
 
 @Entity
 @Table(name = "tbl_delivery_center")
-public class DeliveryCenter extends DataEntity<Admin, Long> {
+public class DeliveryCenter extends DataEntity<Admin, Long> implements Defaultable {
 
 	private static final long serialVersionUID = 3068020458925742990L;
 
@@ -50,7 +51,7 @@ public class DeliveryCenter extends DataEntity<Admin, Long> {
 
 	/** 是否默认 */
 	@Column(nullable = false)
-	private boolean isDefault = false;
+	private boolean defaulted = false;
 
 	public String getName() {
 		return name;
@@ -108,12 +109,19 @@ public class DeliveryCenter extends DataEntity<Admin, Long> {
 		this.memo = memo;
 	}
 
-	public boolean getIsDefault() {
-		return isDefault;
+	@Override
+	public boolean isDefaulted() {
+		return this.defaulted;
 	}
 
-	public void setIsDefault(boolean isDefault) {
-		this.isDefault = isDefault;
+	@Override
+	public void setDefaulted(boolean defaulted) {
+		this.defaulted = defaulted;
+	}
+
+	@Override
+	public void markDefaulted() {
+		this.defaulted = true;
 	}
 
 }

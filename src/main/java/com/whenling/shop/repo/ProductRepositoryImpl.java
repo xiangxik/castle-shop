@@ -9,21 +9,21 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import com.whenling.castle.repo.domain.Defaultable;
-import com.whenling.shop.entity.DeliveryCenter;
+import com.whenling.shop.entity.Product;
 
-public class DeliveryCenterRepositoryImpl implements DeliveryCenterRepositoryCustom {
+public class ProductRepositoryImpl implements ProductRepositoryCustom {
 
 	@PersistenceContext
 	protected EntityManager entityManager;
 
 	@Override
-	public DeliveryCenter findDefault() {
+	public Product findDefault() {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<DeliveryCenter> query = criteriaBuilder.createQuery(DeliveryCenter.class);
-		Root<DeliveryCenter> root = query.from(DeliveryCenter.class);
+		CriteriaQuery<Product> query = criteriaBuilder.createQuery(Product.class);
+		Root<Product> root = query.from(Product.class);
 		query.where(criteriaBuilder.isTrue(root.get(Defaultable.PROPERTY_NAME)));
-		List<DeliveryCenter> deliveryCenters = entityManager.createQuery(query).getResultList();
-		return deliveryCenters != null && deliveryCenters.size() > 0 ? deliveryCenters.get(0) : null;
+		List<Product> products = entityManager.createQuery(query).getResultList();
+		return products != null && products.size() > 0 ? products.get(0) : null;
 	}
 
 }

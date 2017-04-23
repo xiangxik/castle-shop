@@ -11,12 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.common.base.Objects;
 import com.querydsl.core.types.Predicate;
 import com.whenling.castle.repo.domain.SortNoComparator;
 import com.whenling.shop.entity.Product;
 import com.whenling.shop.entity.ProductSku;
-import com.whenling.shop.entity.QProduct;
 import com.whenling.shop.entity.QProductSku;
 import com.whenling.shop.repo.ProductSkuRepository;
 import com.whenling.shop.repo.SpecificationRepository;
@@ -62,19 +60,6 @@ public class ProductController extends CrudController<Product, Long> {
 		Integer skuCount = getParameter("skuCount", Integer.class, 0);
 		List<ProductSku> skus = entity.getProductSkus().subList(0, skuCount);
 		entity.setProductSkus(skus);
-
-		if (entity.isDefaultShow()) {
-			Iterable<Product> defaultShowProducts = getBaseJpaRepository()
-					.findAll(QProduct.product.defaultShow.isTrue());
-			if (defaultShowProducts != null) {
-				for (Product defaultShowProduct : defaultShowProducts) {
-					if (!Objects.equal(defaultShowProduct, entity)) {
-						defaultShowProduct.setDefaultShow(false);
-						getBaseJpaRepository().save(defaultShowProduct);
-					}
-				}
-			}
-		}
 	}
 
 	@Override

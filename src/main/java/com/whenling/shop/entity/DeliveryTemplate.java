@@ -8,11 +8,12 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.whenling.castle.repo.domain.Defaultable;
 import com.whenling.castle.repo.jpa.DataEntity;
 
 @Entity
 @Table(name = "tbl_delivery_template")
-public class DeliveryTemplate extends DataEntity<Admin, Long> {
+public class DeliveryTemplate extends DataEntity<Admin, Long> implements Defaultable {
 
 	private static final long serialVersionUID = -8495374111555971726L;
 
@@ -55,9 +56,8 @@ public class DeliveryTemplate extends DataEntity<Admin, Long> {
 	private String background;
 
 	/** 是否默认 */
-	@NotNull
 	@Column(nullable = false)
-	private boolean isDefault = false;
+	private boolean defaulted = false;
 
 	/** 备注 */
 	@Size(max = 200)
@@ -119,20 +119,27 @@ public class DeliveryTemplate extends DataEntity<Admin, Long> {
 		this.background = background;
 	}
 
-	public boolean getIsDefault() {
-		return isDefault;
-	}
-
-	public void setIsDefault(boolean isDefault) {
-		this.isDefault = isDefault;
-	}
-
 	public String getMemo() {
 		return memo;
 	}
 
 	public void setMemo(String memo) {
 		this.memo = memo;
+	}
+
+	@Override
+	public boolean isDefaulted() {
+		return this.defaulted;
+	}
+
+	@Override
+	public void setDefaulted(boolean defaulted) {
+		this.defaulted = defaulted;
+	}
+
+	@Override
+	public void markDefaulted() {
+		this.defaulted = true;
 	}
 
 }

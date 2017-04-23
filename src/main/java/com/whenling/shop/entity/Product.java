@@ -26,13 +26,14 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import com.whenling.castle.repo.domain.Defaultable;
 import com.whenling.castle.repo.domain.Sortable;
 import com.whenling.castle.repo.jpa.DataEntity;
 import com.whenling.shop.support.repo.SaleInfoListToStringConverter;
 
 @Entity
 @Table(name = "tbl_product")
-public class Product extends DataEntity<Admin, Long> {
+public class Product extends DataEntity<Admin, Long> implements Defaultable {
 
 	private static final long serialVersionUID = -6934807834358886933L;
 
@@ -139,7 +140,9 @@ public class Product extends DataEntity<Admin, Long> {
 	@Size(max = 200)
 	private String seoDescription;
 
-	private boolean defaultShow = false;
+	/** 是否默认 */
+	@Column(nullable = false)
+	private boolean defaulted = false;
 
 	public String getSn() {
 		return sn;
@@ -293,12 +296,19 @@ public class Product extends DataEntity<Admin, Long> {
 		this.seoDescription = seoDescription;
 	}
 
-	public boolean isDefaultShow() {
-		return defaultShow;
+	@Override
+	public boolean isDefaulted() {
+		return this.defaulted;
 	}
 
-	public void setDefaultShow(boolean defaultShow) {
-		this.defaultShow = defaultShow;
+	@Override
+	public void setDefaulted(boolean defaulted) {
+		this.defaulted = defaulted;
+	}
+
+	@Override
+	public void markDefaulted() {
+		this.defaulted = true;
 	}
 
 	public String getExpress() {
