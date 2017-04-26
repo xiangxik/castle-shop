@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>无产品</title>
+<title th:text="${setting.siteName}">无产品</title>
 
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
 <link rel="stylesheet" th:href="@{/assets/weui/style/weui.css}" />
@@ -13,16 +13,7 @@
 <script th:src="@{/assets/weui/zepto.min.js}"></script>
 </head>
 <body ontouchstart>
-	<div class="page-hd">
-		<h1 class="page-hd-title">无产品</h1>
-		<p class="page-hd-desc"></p>
-	</div>
-	<div class="weui-footer weui-footer-fixed-bottom">
-		<p class="weui-footer-links">
-			<a th:href="@{/login}" class="weui-footer-link">请登录后台添加产品</a>
-		</p>
-		<p class="weui-footer__text">Copyright &copy; 2015-2017 当凌科技</p>
-	</div>
+	<div class="weui_article" th:utext="${setting.siteCloseMessage}" style="background-color: white; padding: 0 10px 10px;"></div>
 	<div th:replace="/layout/statistics :: main"></div>
 </body>
 </html>

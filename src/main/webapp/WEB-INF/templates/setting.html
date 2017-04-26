@@ -16,9 +16,6 @@
 			<div class="nav-tabs-custom">
 				<ul class="nav nav-tabs">
 					<li class="active"><a href="#tab_base" data-toggle="tab">基本设置</a></li>
-					<li><a href="#tab_display" data-toggle="tab">显示设置</a></li>
-					<li><a href="#tab_register" data-toggle="tab">注册与安全</a></li>
-					<li><a href="#tab_mail" data-toggle="tab">邮件设置</a></li>
 					<li><a href="#tab_other" data-toggle="tab">其他设置</a></li>
 				</ul>
 				<div class="tab-content" style="min-height: 400px;">
@@ -26,27 +23,11 @@
 						<div class="form-horizontal">
 							<div class="box-body">
 								<div class="form-group">
-									<label for="input-siteName" class="col-sm-2 control-label"><i class="required-tip">*</i>站点名称</label>
+									<label for="input-siteName" class="col-sm-2 control-label">站点名称</label>
 
 									<div class="col-sm-10">
 										<input class="form-control" id="input-siteName" name="siteName" th:value="*{siteName}" placeholder="请输入站点名称"
 											type="text" data-bv-notempty="true" data-bv-notempty-message="请填写站点名称">
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="input-logo" class="col-sm-2 control-label">logo</label>
-
-									<div class="col-sm-10">
-										<input type="file" class="file-loading" name="file"> <input type="hidden" name="logo"
-											th:value="*{logo}">
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="input-hotSearch" class="col-sm-2 control-label">热门搜索</label>
-
-									<div class="col-sm-10">
-										<input class="form-control" id="input-hotSearch" name="hotSearch" th:value="*{hotSearch}"
-											placeholder="请输入热门搜索" type="text">
 									</div>
 								</div>
 								<div class="form-group">
@@ -111,112 +92,36 @@
 							</div>
 						</div>
 					</div>
-					<div class="tab-pane" id="tab_display">
+					<div class="tab-pane" id="tab_other">
 						<div class="form-horizontal">
 							<div class="box-body">
 								<div class="form-group">
-									<label for="input-largeProductImageWidth" class="col-sm-2 control-label">商品图片(大)宽度</label>
+									<label for="input-baiduSiteId" class="col-sm-2 control-label">百度统计ID</label>
 
 									<div class="col-sm-10">
-										<input class="form-control" id="input-largeProductImageWidth" name="largeProductImageWidth"
-											th:value="*{largeProductImageWidth}" placeholder="请输入商品图片(大)宽度" type="text">
+										<input class="form-control" id="input-baiduSiteId" name="baiduSiteId" th:value="*{baiduSiteId}" placeholder="请输入百度统计ID"
+											type="text">
 									</div>
 								</div>
 								<div class="form-group">
-									<label for="input-largeProductImageHeight" class="col-sm-2 control-label">商品图片(大)高度</label>
+									<label for="input-saleOrderCount" class="col-sm-2 control-label"><i class="required-tip">*</i>销售获取未处理订单数</label>
 
 									<div class="col-sm-10">
-										<input class="form-control" id="input-largeProductImageHeight" name="largeProductImageHeight"
-											th:value="*{largeProductImageHeight}" placeholder="请输入商品图片(大)高度" type="text">
+										<input class="form-control" id="input-saleOrderCount" name="saleOrderCount" th:value="*{saleOrderCount}" placeholder="请输入销售获取未处理订单数"
+											type="text" data-bv-notempty="true" data-bv-notempty-message="请填写销售获取未处理订单数">
 									</div>
 								</div>
 								<div class="form-group">
-									<label for="input-mediumProductImageWidth" class="col-sm-2 control-label">商品图片(中)宽度</label>
+									<label for="input-orderSubmitMessage" class="col-sm-2 control-label"><i class="required-tip">*</i>订单提交成功提示</label>
 
 									<div class="col-sm-10">
-										<input class="form-control" id="input-mediumProductImageWidth" name="mediumProductImageWidth"
-											th:value="*{mediumProductImageWidth}" placeholder="请输入商品图片(中)宽度" type="text">
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="input-mediumProductImageHeight" class="col-sm-2 control-label">商品图片(中)高度</label>
-
-									<div class="col-sm-10">
-										<input class="form-control" id="input-mediumProductImageHeight" name="mediumProductImageHeight"
-											th:value="*{mediumProductImageHeight}" placeholder="请输入商品图片(中)高度" type="text">
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="input-thumbnailProductImageWidth" class="col-sm-2 control-label">商品缩略图宽度</label>
-
-									<div class="col-sm-10">
-										<input class="form-control" id="input-thumbnailProductImageWidth" name="thumbnailProductImageWidth"
-											th:value="*{thumbnailProductImageWidth}" placeholder="请输入商品缩略图宽度" type="text">
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="input-thumbnailProductImageHeight" class="col-sm-2 control-label">商品缩略图高度</label>
-
-									<div class="col-sm-10">
-										<input class="form-control" id="input-thumbnailProductImageHeight" name="thumbnailProductImageHeight"
-											th:value="*{thumbnailProductImageHeight}" placeholder="请输入商品缩略图高度" type="text">
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="input-defaultLargeProductImage" class="col-sm-2 control-label">默认商品图片(大)</label>
-
-									<div class="col-sm-10">
-										<input type="file" class="file-loading" name="file"> <input type="hidden"
-											name="defaultLargeProductImage" th:value="*{defaultLargeProductImage}">
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="input-defaultMediumProductImage" class="col-sm-2 control-label">默认商品图片(小)</label>
-
-									<div class="col-sm-10">
-										<input type="file" class="file-loading" name="file"> <input type="hidden"
-											name="defaultMediumProductImage" th:value="*{defaultMediumProductImage}">
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="input-defaultThumbnailProductImage" class="col-sm-2 control-label">默认缩略图</label>
-
-									<div class="col-sm-10">
-										<input type="file" class="file-loading" name="file"> <input type="hidden"
-											name="defaultThumbnailProductImage" th:value="*{defaultThumbnailProductImage}">
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="input-watermarkAlpha" class="col-sm-2 control-label">水印透明度</label>
-
-									<div class="col-sm-10">
-										<input class="form-control" id="input-watermarkAlpha" name="watermarkAlpha" th:value="*{watermarkAlpha}"
-											placeholder="请输入水印透明度" type="text">
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="input-watermarkImage" class="col-sm-2 control-label">水印图片</label>
-
-									<div class="col-sm-10">
-										<input type="file" class="file-loading" name="file"> <input type="hidden" name="watermarkImage"
-											th:value="*{watermarkImage}">
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="input-watermarkPosition" class="col-sm-2 control-label">水印位置</label>
-
-									<div class="col-sm-10">
-										<select id="input-watermarkPosition" name="watermarkPosition" class="form-control">
-											<option th:each="watermarkPosition:${watermarkPositions}" th:value="${watermarkPosition}" th:selected="*{watermarkPosition}==${watermarkPosition}" th:text="#{Setting.__${watermarkPosition}__}"></option>
-										</select>
+										<input class="form-control" id="input-orderSubmitMessage" name="orderSubmitMessage" th:value="*{orderSubmitMessage}" placeholder="请输入订单提交成功提示"
+											type="text" data-bv-notempty="true" data-bv-notempty-message="请填写订单提交成功提示">
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="tab-pane" id="tab_register"></div>
-					<div class="tab-pane" id="tab_mail"></div>
-					<div class="tab-pane" id="tab_other"></div>
 				</div>
 				<!-- /.tab-content -->
 				<div class="box-footer">
@@ -228,7 +133,7 @@
 
 
 	<script type="text/javascript">
-		requirejs([ "domReady", "validator", "icheck", "fileinput", "kindeditor" ], function(ready) {
+		requirejs([ "domReady", "validator", "icheck", "kindeditor" ], function(ready) {
 			ready(function() {
 				activeMenu("management_setting");
 				$(".icheck input").iCheck({
@@ -236,30 +141,6 @@
 					radioClass : 'iradio_square-blue',
 					increaseArea : '20%' // optional
 				});
-
-				var initFileInput = function(element) {
-					element.fileinput({
-						uploadUrl : base + "/multipart/upload/image",
-						language : "zh",
-						initialCaption : element.closest(".form-group").find("input[type=hidden]").val(),
-						showPreview : false,
-						multiple : false,
-						showUpload : false, // hide upload button
-						showRemove : false, // hide remove button
-						minFileCount : 1,
-						maxFileCount : 1,
-						allowedFileTypes : [ "image" ],
-						maxFileSize : 200 * 1024 * 1024
-					}).on("filebatchselected", function(event, files) {
-						$(this).fileinput("upload");
-					}).on('fileuploaded', function(event, data, previewId, index) {
-						response = data.response;
-						if (response.success) {
-							$(this).closest(".form-group").find("input[type=hidden]").val(response.urls);
-						}
-					});
-				}
-				initFileInput($("#form-setting input[type=file]"));
 
 				var editor = KindEditor.create('#form-setting .editor', {
 					langType : "zh-CN",
@@ -272,6 +153,31 @@
 					resizeType : 1,
 					imageSizeLimit : '10MB',
 					imageUploadLimit : 100
+				});
+				
+				$("#form-setting").bootstrapValidator().on("success.form.bv", function(e) {
+					e.preventDefault();
+					var $form = $(e.target);
+					var bv = $form.data('bootstrapValidator');
+					$.post($form.attr('action'), $form.serialize(), function(result) {
+						if (result.success) {
+							$.alert({
+								title : false,
+								content : "保存成功",
+								buttons : {
+									ok : {
+										text : "关闭"
+									}
+								}
+							});
+						} else {
+							$.alert({
+								title : false,
+								content : result.msg
+							});
+						}
+						$form.bootstrapValidator('disableSubmitButtons', false);
+					}, "json");
 				});
 			});
 		});

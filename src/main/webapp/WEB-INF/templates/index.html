@@ -17,17 +17,21 @@
 .f-gray {
 	color: #8c8c8c;
 }
+
 .weui-label.selected {
 	border: 1px solid #ff7f0d;
 	color: #ff7f0d;
 }
+
 .weui-label.locked {
 	color: #ddd;
 	border: 1px dotted #ccc;
 }
+
 #slide-header.slide::after {
 	padding-top: 100%;
 }
+
 .required-tip {
 	color: red;
 }
@@ -55,11 +59,10 @@
 <body ontouchstart class="page-bg" th:object="${product}">
 	<div class="slide" id="slide-header">
 		<ul>
-			<li th:each="productImage:*{productImages}">
-				<a href="javascript:;"> <img th:src="${productImage.source}" th:alt="${productImage.title}">
-				</a>
-				<div class="slide-desc" th:text="${productImage.title}"></div>
-			</li>
+			<li th:each="productImage:*{productImages}"><a href="javascript:;"> <img th:src="${productImage.source}"
+					th:alt="${productImage.title}">
+			</a>
+				<div class="slide-desc" th:text="${productImage.title}"></div></li>
 		</ul>
 		<div class="dot">
 			<span th:each="productImage:*{productImages}"></span>
@@ -84,7 +87,9 @@
 					<td style="width: 46px;" th:text="${specification.name}+'：'"></td>
 					<td colspan="3">
 						<div class="weui-label-list product-color">
-							<label class="weui-label" th:each="specificationValue : ${specification.specificationValues}" th:if="${allSpecificationValues!=null&&#sets.contains(allSpecificationValues, specificationValue)}" th:val="${specificationValue.id}" th:text="${specificationValue.name}">color</label>
+							<label class="weui-label" th:each="specificationValue : ${specification.specificationValues}"
+								th:if="${allSpecificationValues!=null&&#sets.contains(allSpecificationValues, specificationValue)}"
+								th:val="${specificationValue.id}" th:text="${specificationValue.name}">color</label>
 						</div>
 					</td>
 				</tr>
@@ -121,7 +126,8 @@
 		</div>
 	</div>
 
-	<div th:if="*{#lists.size(saleInfos)}>0" id="colee" style="overflow: hidden; height: 60px; width: 100%; font-size: 12px; color: #ff7f0d">
+	<div th:if="*{#lists.size(saleInfos)}>0" id="colee"
+		style="overflow: hidden; height: 60px; width: 100%; font-size: 12px; color: #ff7f0d">
 		<div id="colee1">
 			<p style="text-align: center;" th:each="saleInfo : *{saleInfos}" th:text="${saleInfo.content}"></p>
 		</div>
@@ -186,6 +192,7 @@
 	<script type="text/javascript" th:inline="javascript">
 		var base = /*[[${#httpServletRequest.getContextPath()}]]*/"";
 		var skuList = /*[[${skuList}]]*/{};
+		var orderSubmitMessage = /*[[${setting.orderSubmitMessage}]]*/"";
 	</script>
 	<script type="text/javascript">
 		$(window).scroll(function() {
@@ -207,7 +214,7 @@
 		var colee2 = document.getElementById("colee2");
 		var colee1 = document.getElementById("colee1");
 		var colee = document.getElementById("colee");
-		if(colee1) {
+		if (colee1) {
 			colee2.innerHTML = colee1.innerHTML; //克隆colee1为colee2
 		}
 		var scrollTop = -1;
@@ -220,7 +227,7 @@
 				colee.scrollTop++;
 			}
 		}
-		if(colee) {
+		if (colee) {
 			var MyMar1 = setInterval(Marquee1, speed)//设置定时器
 			//鼠标移上时清除定时器达到滚动停止的目的
 			//colee.onmouseover = function() {
@@ -231,14 +238,14 @@
 			//	MyMar1 = setInterval(Marquee1, speed)
 			//}
 		}
-		
+
 		var $form = $("form");
-		
+
 		var $specification = $(".specification");
 		var $specificationValue = $(".specification .weui-label-list .weui-label");
 		var $price = $("#price");
 		var $marketPrice = $("#marketPrice");
-		
+
 		// 规格值选择
 		$specificationValue.click(function() {
 			var $this = $(this);
@@ -252,10 +259,11 @@
 			});
 			var locked = true;
 			$.each(skuList, function(i, sku) {
-				if (sku.specificationValues.length == selectedIds.length && contains(sku.specificationValues, selectedIds)) {
+				if (sku.specificationValues.length == selectedIds.length
+						&& contains(sku.specificationValues, selectedIds)) {
 					//locked = false;
-					$price.text("￥ "+sku.price);
-					$marketPrice.text("￥ "+sku.marketPrice);
+					$price.text("￥ " + sku.price);
+					$marketPrice.text("￥ " + sku.marketPrice);
 					$form.find("input[name=productSkuId]").val(sku.id);
 					return false;
 				}
@@ -265,7 +273,7 @@
 			}
 			return false;
 		});
-		
+
 		// 锁定规格值
 		function lockSpecificationValue() {
 			var selectedIds = new Array();
@@ -297,11 +305,11 @@
 				});
 			});
 		}
-		
+
 		// 判断是否包含
 		function contains(array, values) {
 			var contains = true;
-			for(i in values) {
+			for (i in values) {
 				if ($.inArray(values[i], array) < 0) {
 					contains = false;
 					break;
@@ -309,7 +317,7 @@
 			}
 			return contains;
 		}
-		
+
 		$form.form();
 		$("#submitlink").on("click", function() {
 			$form.validate(function(error) {
@@ -318,7 +326,7 @@
 				} else {
 					$.post($form.attr('action'), $form.serialize(), function(result) {
 						if (result.success) {
-							$.alert("稍后会有客服人员联系您，请耐心等待", "订购成功");
+							$.alert(orderSubmitMessage, "订购成功");
 						} else {
 							$.alert("提交失败", "提示");
 						}
@@ -328,5 +336,6 @@
 
 		});
 	</script>
+	<div th:replace="/layout/statistics :: main"></div>
 </body>
 </html>

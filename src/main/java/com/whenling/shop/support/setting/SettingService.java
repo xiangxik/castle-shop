@@ -46,7 +46,7 @@ public class SettingService {
 			Object cacheValue = valueWrapper.get();
 			setting = (Setting) cacheValue;
 		} else {
-			setting = new Setting();
+			setting = Setting.getInstance();
 			try {
 				File settingFile = new ClassPathResource(settingXmlPath).getFile();
 				Document document = new SAXReader().read(settingFile);
@@ -104,7 +104,7 @@ public class SettingService {
 				IOUtils.closeQuietly(fileOutputStream);
 			}
 			Cache cache = cacheManager.getCache(Setting.CACHE_NAME);
-			cache.put(Setting.CACHE_KEY, cache);
+			cache.put(Setting.CACHE_KEY, setting);
 		} catch (IOException | DocumentException e) {
 			e.printStackTrace();
 		}

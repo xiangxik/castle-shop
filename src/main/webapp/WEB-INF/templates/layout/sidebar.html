@@ -34,6 +34,8 @@
 						<span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i></span>
 					</a>
 					<ul class="treeview-menu">
+						<li class="menu_management_setting" th:if="${currentUser.admin}"><a href="#/page/setting"><i class="fa fa-circle-o"></i> <span>系统设置</span></a>
+						</li>
 						<li class="menu_management_admin" th:if="${currentUser.admin}"><a href="#/page/admin"><i class="fa fa-circle-o"></i> <span>管理员管理</span></a>
 						</li>
 						<li class="menu_management_specification" th:if="${currentUser.admin}"><a

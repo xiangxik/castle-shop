@@ -3,7 +3,6 @@ package com.whenling.shop.controller;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -38,13 +37,11 @@ import com.whenling.shop.entity.QOrder;
 import com.whenling.shop.repo.DeliveryCenterRepository;
 import com.whenling.shop.repo.DeliveryTemplateRepository;
 import com.whenling.shop.support.mvc.CrudController;
+import com.whenling.shop.support.setting.SettingUtils;
 
 @Controller
 @RequestMapping("/order")
 public class OrderController extends CrudController<Order, Long> {
-
-	@Value("${order.maxPendingCount?:3}")
-	private Integer maxPendingCount;
 
 	@Autowired
 	private DeliveryTemplateRepository deliveryTemplateRepository;
@@ -101,6 +98,11 @@ public class OrderController extends CrudController<Order, Long> {
 	public Result getOrder(@CurrentUser Admin saler) {
 		if (!saler.isSalesman()) {
 			return Result.failure().message("当前用户不是销售人员");
+		}
+
+		Integer maxPendingCount = SettingUtils.get().getSaleOrderCount();
+		if (maxPendingCount == null) {
+			maxPendingCount = 3;
 		}
 		Long pendingOrderCount = getBaseJpaRepository()
 				.count(QOrder.order.operator.eq(saler).and(QOrder.order.orderStatus.eq("inhand")));

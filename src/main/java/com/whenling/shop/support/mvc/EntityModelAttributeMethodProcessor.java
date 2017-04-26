@@ -21,6 +21,7 @@ import org.springframework.web.servlet.HandlerMapping;
 
 import com.google.common.base.Strings;
 import com.whenling.castle.repo.jpa.BaseEntity;
+import com.whenling.shop.support.setting.Setting;
 
 public class EntityModelAttributeMethodProcessor extends ModelAttributeMethodProcessor {
 
@@ -32,12 +33,13 @@ public class EntityModelAttributeMethodProcessor extends ModelAttributeMethodPro
 	}
 
 	@Override
-	protected final Object createAttribute(String attributeName, MethodParameter methodParam, WebDataBinderFactory binderFactory,
-			NativeWebRequest request) throws Exception {
+	protected final Object createAttribute(String attributeName, MethodParameter methodParam,
+			WebDataBinderFactory binderFactory, NativeWebRequest request) throws Exception {
 
 		String value = getRequestValueForAttribute(attributeName, request);
 		if (value != null) {
-			Object attribute = createAttributeFromRequestValue(value, attributeName, methodParam, binderFactory, request);
+			Object attribute = createAttributeFromRequestValue(value, attributeName, methodParam, binderFactory,
+					request);
 			if (attribute != null) {
 				return attribute;
 			}
@@ -50,6 +52,8 @@ public class EntityModelAttributeMethodProcessor extends ModelAttributeMethodPro
 				} else {
 					return parameterType.newInstance();
 				}
+			} else if (ClassUtils.isAssignable(Setting.class, parameterType)) {
+				return Setting.getInstance();
 			}
 		}
 
@@ -69,13 +73,14 @@ public class EntityModelAttributeMethodProcessor extends ModelAttributeMethodPro
 
 	@SuppressWarnings("unchecked")
 	protected final Map<String, String> getUriTemplateVariables(NativeWebRequest request) {
-		Map<String, String> variables = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE,
-				RequestAttributes.SCOPE_REQUEST);
+		Map<String, String> variables = (Map<String, String>) request
+				.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE, RequestAttributes.SCOPE_REQUEST);
 		return (variables != null ? variables : Collections.<String, String>emptyMap());
 	}
 
-	protected Object createAttributeFromRequestValue(String sourceValue, String attributeName, MethodParameter methodParam,
-			WebDataBinderFactory binderFactory, NativeWebRequest request) throws Exception {
+	protected Object createAttributeFromRequestValue(String sourceValue, String attributeName,
+			MethodParameter methodParam, WebDataBinderFactory binderFactory, NativeWebRequest request)
+			throws Exception {
 
 		DataBinder binder = binderFactory.createBinder(request, null, attributeName);
 		ConversionService conversionService = binder.getConversionService();

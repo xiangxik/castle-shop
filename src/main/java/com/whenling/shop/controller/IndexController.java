@@ -44,6 +44,7 @@ import com.whenling.shop.repo.OrderRepository;
 import com.whenling.shop.repo.ProductRepository;
 import com.whenling.shop.repo.ProductSkuRepository;
 import com.whenling.shop.security.AdminDetailsService.CurrentUserDetails;
+import com.whenling.shop.support.setting.SettingUtils;
 
 @Controller
 @RequestMapping
@@ -66,6 +67,9 @@ public class IndexController {
 
 	@RequestMapping(value = { "", "/", "/index" }, method = RequestMethod.GET)
 	public String indexPage(Model model) {
+		if (SettingUtils.get().getIsSiteEnabled()) {
+			return "/site_close";
+		}
 		Product product = productRepository.findDefault();
 		if (product == null) {
 			Iterable<Product> products = productRepository.findAll(QProduct.product.isMarketable.isTrue());
@@ -78,6 +82,9 @@ public class IndexController {
 
 	@RequestMapping(value = "/p/{product}", method = RequestMethod.GET)
 	public String p(@PathVariable("product") Product product, Model model) {
+		if (SettingUtils.get().getIsSiteEnabled()) {
+			return "/site_close";
+		}
 		if (product == null) {
 			return "/no_product";
 		}
