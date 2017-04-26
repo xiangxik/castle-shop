@@ -77,8 +77,14 @@ public class Admin extends DataEntity<Admin, Long> implements Lockedable, Disabl
 	/** 最后登录IP */
 	private String lastLoginIp;
 
+	public static final String ROLE_ADMIN = "admin";
+	public static final String ROLE_SALESMAN = "salesman";
+	public static final String ROLE_SALESMAN_TEMP = "salestemp";
+	public static final String ROLE_SHIPPER = "shipper";
+	public static final String ROLE_UNDEFINE = "undefine";
+
 	/** 业务类型 admin、salesman、shipper */
-	private String businessType = "admin";
+	private String businessType = ROLE_ADMIN;
 
 	public String getUsername() {
 		return username;
@@ -208,14 +214,18 @@ public class Admin extends DataEntity<Admin, Long> implements Lockedable, Disabl
 	}
 
 	public boolean isAdmin() {
-		return Objects.equal("admin", getBusinessType());
+		return Objects.equal(ROLE_ADMIN, getBusinessType());
 	}
 
 	public boolean isSalesman() {
-		return Objects.equal("salesman", getBusinessType());
+		return Objects.equal(ROLE_SALESMAN, getBusinessType());
+	}
+
+	public boolean isTempSalesman() {
+		return Objects.equal(ROLE_SALESMAN_TEMP, getBusinessType());
 	}
 
 	public boolean isShipper() {
-		return Objects.equal("shipper", getBusinessType());
+		return Objects.equal(ROLE_SHIPPER, getBusinessType());
 	}
 }

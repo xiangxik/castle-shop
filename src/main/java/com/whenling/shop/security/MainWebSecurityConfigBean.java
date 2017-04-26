@@ -22,6 +22,7 @@ import org.springframework.security.web.context.request.async.WebAsyncManagerInt
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.whenling.castle.security.ResultAuthenticationFailureHanlder;
 import com.whenling.castle.security.ResultAuthenticationSuccessHandler;
+import com.whenling.shop.entity.Admin;
 
 @Configuration
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -42,23 +43,27 @@ public class MainWebSecurityConfigBean extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().and().addFilter(new WebAsyncManagerIntegrationFilter()).exceptionHandling().and().headers().and().sessionManagement().and().securityContext().and()
-				.requestCache().and().anonymous().and().servletApi().and().logout();
+		http.csrf().and().addFilter(new WebAsyncManagerIntegrationFilter()).exceptionHandling().and().headers().and()
+				.sessionManagement().and().securityContext().and().requestCache().and().anonymous().and().servletApi()
+				.and().logout();
 
 		http.getSharedObject(AuthenticationManagerBuilder.class)// .authenticationProvider(null)
 				.authenticationEventPublisher(defaultAuthenticationEventPublisher());
 
 		http.rememberMe().userDetailsService(userDetailsService());
-		FormLoginConfigurer<HttpSecurity> configurer = http.headers().frameOptions().sameOrigin().and().csrf().disable().formLogin();
-		configurer.successHandler(new ResultAuthenticationSuccessHandler(objectMapper.getObject()))
-				.failureHandler(new ResultAuthenticationFailureHanlder(objectMapper.getObject(), messageSourceAccessor.getObject()));
+		FormLoginConfigurer<HttpSecurity> configurer = http.headers().frameOptions().sameOrigin().and().csrf().disable()
+				.formLogin();
+		configurer.successHandler(new ResultAuthenticationSuccessHandler(objectMapper.getObject())).failureHandler(
+				new ResultAuthenticationFailureHanlder(objectMapper.getObject(), messageSourceAccessor.getObject()));
 
 		ExceptionHandlingConfigurer<HttpSecurity> exceptionConfigurer = configurer.permitAll().and().authorizeRequests()
-				.antMatchers("/admin/**", "/sms/**", "/product/**", "/specification/**").hasRole(AdminDetailsService.ROLE_ADMIN)
-				.antMatchers("/deliveryCenter/**", "/deliveryTemplate/**").hasAnyRole(AdminDetailsService.ROLE_ADMIN, AdminDetailsService.ROLE_SHIPPER)
-				.antMatchers("/order/**,/dashboard").hasAnyRole(AdminDetailsService.ROLE_ADMIN, AdminDetailsService.ROLE_SHIPPER, AdminDetailsService.ROLE_SALESMAN)
+				.antMatchers("/admin/**", "/sms/**", "/product/**", "/specification/**", "/setting/**")
+				.hasRole(Admin.ROLE_ADMIN).antMatchers("/deliveryCenter/**", "/deliveryTemplate/**")
+				.hasAnyRole(Admin.ROLE_ADMIN, Admin.ROLE_SHIPPER).antMatchers("/order/**,/dashboard")
+				.hasAnyRole(Admin.ROLE_ADMIN, Admin.ROLE_SHIPPER, Admin.ROLE_SALESMAN, Admin.ROLE_SALESMAN_TEMP)
 				.antMatchers(skipAuthUrls).permitAll().anyRequest().authenticated().and().exceptionHandling();
-		exceptionConfigurer.authenticationEntryPoint(new ExceptionAuthenticationEntryPoint(new Http403ForbiddenEntryPoint(), new LoginUrlAuthenticationEntryPoint("/login")));
+		exceptionConfigurer.authenticationEntryPoint(new ExceptionAuthenticationEntryPoint(
+				new Http403ForbiddenEntryPoint(), new LoginUrlAuthenticationEntryPoint("/login")));
 		exceptionConfigurer.and().logout().logoutSuccessUrl("/login").permitAll();
 	}
 

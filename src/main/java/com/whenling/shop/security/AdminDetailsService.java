@@ -15,11 +15,6 @@ import com.whenling.shop.repo.AdminRepository;
 
 public class AdminDetailsService implements UserDetailsService {
 
-	public static final String ROLE_ADMIN = "admin";
-	public static final String ROLE_SALESMAN = "salesman";
-	public static final String ROLE_SHIPPER = "shipper";
-	public static final String ROLE_UNDEFINE = "undefine";
-
 	@Autowired
 	private AdminRepository adminRepository;
 
@@ -31,13 +26,13 @@ public class AdminDetailsService implements UserDetailsService {
 			throw new UsernameNotFoundException("Could not find user " + username);
 		}
 
-		String role = ROLE_UNDEFINE;
+		String role = Admin.ROLE_UNDEFINE;
 		if (admin.isAdmin()) {
-			role = ROLE_ADMIN;
+			role = Admin.ROLE_ADMIN;
 		} else if (admin.isSalesman()) {
-			role = ROLE_SALESMAN;
+			role = Admin.ROLE_SALESMAN;
 		} else if (admin.isShipper()) {
-			role = ROLE_SHIPPER;
+			role = Admin.ROLE_SHIPPER;
 		}
 		return new CurrentUserDetails(admin.getId(), admin.getUsername(), admin.getPassword(), true, true, true, true, AuthorityUtils.createAuthorityList("ROLE_"+role));
 	}

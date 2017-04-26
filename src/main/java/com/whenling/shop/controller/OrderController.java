@@ -72,6 +72,8 @@ public class OrderController extends CrudController<Order, Long> {
 			booleanBuilder.and(QOrder.order.operator.eq(currentUser).and(QOrder.order.orderStatus.ne("pending")));
 		} else if (currentUser.isShipper()) {
 			booleanBuilder.and(QOrder.order.orderStatus.in("confirmed", "completed"));
+		} else if (currentUser.isTempSalesman()) {
+			booleanBuilder.and(QOrder.order.orderStatus.eq("followup"));
 		}
 		return getBaseJpaRepository().findAll(booleanBuilder, pageable);
 	}

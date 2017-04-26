@@ -67,7 +67,7 @@ public class IndexController {
 
 	@RequestMapping(value = { "", "/", "/index" }, method = RequestMethod.GET)
 	public String indexPage(Model model) {
-		if (SettingUtils.get().getIsSiteEnabled()) {
+		if (!SettingUtils.get().getIsSiteEnabled()) {
 			return "/site_close";
 		}
 		Product product = productRepository.findDefault();
@@ -82,7 +82,7 @@ public class IndexController {
 
 	@RequestMapping(value = "/p/{product}", method = RequestMethod.GET)
 	public String p(@PathVariable("product") Product product, Model model) {
-		if (SettingUtils.get().getIsSiteEnabled()) {
+		if (!SettingUtils.get().getIsSiteEnabled()) {
 			return "/site_close";
 		}
 		if (product == null) {
