@@ -23,7 +23,7 @@
 
 						<h3 class="profile-username text-center" th:text="${currentUser.name}">Nina Mcintire</h3>
 
-						<p class="text-muted text-center" th:inline="text">[[${currentUser.businessType=='admin'}?'管理员':'']][[${currentUser.businessType=='salesman'}?'销售员':'']][[${currentUser.businessType=='shipper'}?'仓管员':'']]</p>
+						<p class="text-muted text-center" th:inline="text">[[${currentUser.businessType=='admin'}?'管理员':'']][[${currentUser.businessType=='salesman'}?'销售员':'']][[${currentUser.businessType=='salestemp'}?'临时销售员':'']][[${currentUser.businessType=='shipper'}?'仓管员':'']]</p>
 
 					</div>
 					<!-- /.box-body -->

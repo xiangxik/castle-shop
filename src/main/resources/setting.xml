@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-	<setting name="siteName" value="广州市华连达床垫材料店" />
-	<setting name="address" value="广州市白云区竹料白沙商贸城二区华连达材料店" />
+	<setting name="siteName" value="xxx店" />
+	<setting name="address" value="广州市白云区竹" />
 	<setting name="phone" value="13503008668" />
 	<setting name="zipCode" value="510000" />
 	<setting name="email" value="ken@whenling.com" />

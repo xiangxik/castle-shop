@@ -10,7 +10,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
-import org.springframework.util.Assert;
 
 public class ExceptionAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
@@ -20,8 +19,6 @@ public class ExceptionAuthenticationEntryPoint implements AuthenticationEntryPoi
 
 	public ExceptionAuthenticationEntryPoint(Http403ForbiddenEntryPoint http403ForbiddenEntryPoint,
 			LoginUrlAuthenticationEntryPoint loginUrlAuthenticationEntryPoint) {
-		Assert.notNull(http403ForbiddenEntryPoint);
-		Assert.notNull(loginUrlAuthenticationEntryPoint);
 
 		this.http403ForbiddenEntryPoint = http403ForbiddenEntryPoint;
 		this.loginUrlAuthenticationEntryPoint = loginUrlAuthenticationEntryPoint;
