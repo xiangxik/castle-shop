@@ -2,6 +2,7 @@ package com.whenling.shop.controller;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -38,6 +39,7 @@ import com.whenling.shop.repo.DeliveryCenterRepository;
 import com.whenling.shop.repo.DeliveryTemplateRepository;
 import com.whenling.shop.support.mvc.CrudController;
 import com.whenling.shop.support.setting.SettingUtils;
+import com.whenling.shop.support.sms.SmsUtils;
 
 @Controller
 @RequestMapping("/order")
@@ -92,6 +94,13 @@ public class OrderController extends CrudController<Order, Long> {
 		order.setShippingStatus(shippingStatus);
 		order.setShipper(getCurrentUser());
 		getBaseJpaRepository().save(order);
+		if (Objects.equal(order.getShippingStatus(), "shipped")) {
+			String template = SettingUtils.get().getShippingTemplate();
+			if (!Strings.isNullOrEmpty(template) && !Strings.isNullOrEmpty(order.getPhone())) {
+				SmsUtils.send(order.getPhone(), StringUtils.replace(template, "[sn]", order.getSn()));
+			}
+
+		}
 		return Result.success();
 	}
 

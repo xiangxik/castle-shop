@@ -54,6 +54,13 @@ public class Setting implements Serializable {
 	/** 订单提交提示信息 */
 	private String orderSubmitMessage;
 
+	private String smsUrl;
+	private String smsUserId;
+	private String smsAccount;
+	private String smsPassword;
+
+	private String shippingTemplate;
+
 	public String getSiteName() {
 		return siteName;
 	}
@@ -140,6 +147,46 @@ public class Setting implements Serializable {
 
 	public void setOrderSubmitMessage(String orderSubmitMessage) {
 		this.orderSubmitMessage = orderSubmitMessage;
+	}
+
+	public String getSmsUrl() {
+		return smsUrl;
+	}
+
+	public void setSmsUrl(String smsUrl) {
+		this.smsUrl = smsUrl;
+	}
+
+	public String getSmsUserId() {
+		return smsUserId;
+	}
+
+	public void setSmsUserId(String smsUserId) {
+		this.smsUserId = smsUserId;
+	}
+
+	public String getSmsAccount() {
+		return smsAccount;
+	}
+
+	public void setSmsAccount(String smsAccount) {
+		this.smsAccount = smsAccount;
+	}
+
+	public String getSmsPassword() {
+		return smsPassword;
+	}
+
+	public void setSmsPassword(String smsPassword) {
+		this.smsPassword = smsPassword;
+	}
+
+	public String getShippingTemplate() {
+		return shippingTemplate;
+	}
+
+	public void setShippingTemplate(String shippingTemplate) {
+		this.shippingTemplate = shippingTemplate;
 	}
 
 }

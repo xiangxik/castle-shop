@@ -119,6 +119,47 @@
 											type="text" data-bv-notempty="true" data-bv-notempty-message="请填写订单提交成功提示">
 									</div>
 								</div>
+								<div class="form-group">
+									<label for="input-shippingTemplate" class="col-sm-2 control-label">发货短信模版</label>
+
+									<div class="col-sm-10">
+										<input class="form-control" id="input-shippingTemplate" name="shippingTemplate" th:value="*{shippingTemplate}" placeholder="请输入发货短信模版"
+											type="text">
+									</div>
+								</div>
+								
+								<div class="form-group">
+									<label for="input-smsUrl" class="col-sm-2 control-label">短信接口地址</label>
+
+									<div class="col-sm-10">
+										<input class="form-control" id="input-smsUrl" name="smsUrl" th:value="*{smsUrl}" placeholder="请输入短信接口地址"
+											type="text">
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="input-smsUserId" class="col-sm-2 control-label">短信接口ID</label>
+
+									<div class="col-sm-10">
+										<input class="form-control" id="input-smsUserId" name="smsUserId" th:value="*{smsUserId}" placeholder="请输入短信接口ID"
+											type="text">
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="input-smsAccount" class="col-sm-2 control-label">短信接口账号</label>
+
+									<div class="col-sm-10">
+										<input class="form-control" id="input-smsAccount" name="smsAccount" th:value="*{smsAccount}" placeholder="请输入短信接口账号"
+											type="text">
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="input-smsPassword" class="col-sm-2 control-label">短信接口密码</label>
+
+									<div class="col-sm-10">
+										<input class="form-control" id="input-smsPassword" name="smsPassword" th:value="*{smsPassword}" placeholder="请输入密码"
+											type="text">
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>

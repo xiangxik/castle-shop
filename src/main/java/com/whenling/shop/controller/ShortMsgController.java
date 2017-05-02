@@ -24,6 +24,7 @@ import com.whenling.shop.entity.Admin;
 import com.whenling.shop.entity.ShortMsg;
 import com.whenling.shop.repo.ShortMsgRepository;
 import com.whenling.shop.support.mvc.CrudController;
+import com.whenling.shop.support.sms.SmsUtils;
 
 @Controller
 @RequestMapping("/sms")
@@ -82,6 +83,7 @@ public class ShortMsgController extends CrudController<ShortMsg, Long> {
 		msg.setSendDate(new Date());
 		msg.setOperator(operator);
 		shortMsgRepository.save(msg);
+		SmsUtils.send(mobile, content);
 	}
 
 }

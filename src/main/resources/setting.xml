@@ -12,4 +12,9 @@
 	<setting name="baiduSiteId" value="" />
 	<setting name="saleOrderCount" value="3" />
 	<setting name="orderSubmitMessage" value="稍后会有客服人员联系您，请耐心等待" />
+	<setting name="smsUrl" value="http://121.42.165.59:9001" />
+	<setting name="smsUserId" value="1291" />
+	<setting name="smsAccount" value="网站验证码" />
+	<setting name="smsPassword" value="" />
+	<setting name="shippingTemplate" value="你的订单已发货，单号是[sn]" />
 </config>
