@@ -42,7 +42,14 @@ public class AdminController extends CrudController<Admin, Long> {
 			}
 		} else {
 			if (!Patterns.PATTENR_PASSWORD.matcher(newPassword).matches()) {
-				bindingResult.addError(new FieldError("entity", "password", "密码不符合格式"));
+				bindingResult.addError(new FieldError("entity", "password", "密码必须是6-16位数字、字符组合（不能是纯数字）"));
+			}
+		}
+		
+		if (!Strings.isNullOrEmpty(entity.getUsername())) {
+			Admin otherAdmin = getBaseJpaRepository().findOne(QAdmin.admin.username.eq(entity.getUsername()));
+			if (otherAdmin != null && !Objects.equal(otherAdmin, entity)) {
+				bindingResult.addError(new FieldError("entity", "username", "该账号已占用"));
 			}
 		}
 

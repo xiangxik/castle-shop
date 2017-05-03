@@ -56,7 +56,7 @@ public abstract class CrudController<T, I extends Serializable> extends BaseCont
 	public Result doSave(@ModelAttribute @Valid T entity, BindingResult bindingResult) {
 		onValidate(entity, bindingResult);
 		if (bindingResult.hasErrors()) {
-			return Result.validateError().addProperties("data", bindingResult.getAllErrors());
+			return Result.validateError().error(bindingResult.getAllErrors());
 		}
 
 		onBeforeSave(entity);

@@ -24,7 +24,7 @@ public class Admin extends DataEntity<Admin, Long> implements Lockedable, Disabl
 	/** 用户名 */
 	@NotNull
 	@Size(min = 2, max = 20)
-	@Pattern(regexp = Patterns.REGEX_USERNAME)
+	@Pattern(regexp = Patterns.REGEX_USERNAME, message = "账号必须为4-16位字符")
 	@Column(nullable = false, updatable = false, unique = true, length = 100)
 	private String username;
 
@@ -37,12 +37,12 @@ public class Admin extends DataEntity<Admin, Long> implements Lockedable, Disabl
 
 	/** E-mail */
 	@Size(max = 200)
-	@Pattern(regexp = Patterns.REGEX_MAIL)
+	@Pattern(regexp = Patterns.REGEX_MAIL, message = "请输入正确的邮箱")
 	private String email;
 
 	/** 手机号码 */
 	@Size(max = 200)
-	@Pattern(regexp = Patterns.REGEX_MOBILE)
+	@Pattern(regexp = Patterns.REGEX_MOBILE, message = "请输入正确的手机号码")
 	private String mobile;
 
 	/** 姓名 */
