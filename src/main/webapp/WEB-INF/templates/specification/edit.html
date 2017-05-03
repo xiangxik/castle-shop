@@ -211,7 +211,6 @@
 									$form.find("input[name=specificationValueCount]").val(specificationValueCount);
 
 									$.post($form.attr('action'), $form.serialize(), function(result) {
-										$form.find(".form-control").next("small").remove();
 										if (result.success) {
 											$.alert({
 												title : false,
@@ -226,14 +225,6 @@
 												}
 											});
 										} else {
-											if (result.code == "validateError") {
-												$.each(result.data, function(i, error) {
-													if (error.field) {
-														$form.find(".form-control[name=" + error.field + "]").after(
-																"<small>" + error.defaultMessage + "</small>");
-													}
-												});
-											}
 											$.alert({
 												title : false,
 												content : result.msg
