@@ -49,7 +49,7 @@
 
 				<li class="header">快捷入口</li>
 				<li class="menu_profile"><a href="#/page/profile"><i class="fa fa-address-card"></i> <span>个人设置</span></a></li>
-				<li class="menu_sms" th:if="${currentUser.admin}"><a href="#/page/sms"><i class="fa fa-send"></i> <span>短信发送</span></a>
+				<li class="menu_sms" th:if="${currentUser.admin||currentUser.shipper}"><a href="#/page/sms"><i class="fa fa-send"></i> <span>短信发送</span></a>
 				</li>
 			</ul>
 		</section>
