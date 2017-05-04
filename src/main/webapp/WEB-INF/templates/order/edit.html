@@ -64,7 +64,7 @@
 								<option value="confirmed" th:selected="*{orderStatus}=='confirmed'">已确认</option>
 								<option value="followup" th:selected="*{orderStatus}=='followup'">待跟进</option>
 								<option value="canceled" th:selected="*{orderStatus}=='canceled'">已取消</option>
-								<option value="completed" th:selected="*{orderStatus}=='completed'">已完成</option>
+								<option th:if="${currentUser.admin}" value="completed" th:selected="*{orderStatus}=='completed'">已完成</option>
 							</select>
 							<span th:if="${!allowModifyOrderStatus}" class="form-control" th:inline="text">
 								[[*{orderStatus}=='pending'?'待处理':'']]
@@ -91,6 +91,13 @@
 								[[*{shippingStatus}=='shipped'?'已发货':'']]
 								[[*{shippingStatus}=='received'?'已收货':'']]
 								[[*{shippingStatus}=='returned'?'已退回':'']] </span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="input-shippingSn" class="col-sm-2 control-label">物流单号</label>
+
+						<div class="col-sm-10">
+							<input class="form-control" id="input-shippingSn" placeholder="请输入物流单号" name="shippingSn" th:value="*{shippingSn}" type="text">
 						</div>
 					</div>
 					<div class="form-group">

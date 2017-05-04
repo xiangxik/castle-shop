@@ -85,7 +85,7 @@
 										data-value="followup"> 待跟进 </a></li>
 									<li><a href="javascript:;" class="row-order-status"
 										data-value="canceled"> 已取消 </a></li>
-									<li><a href="javascript:;" class="row-order-status"
+									<li th:if="${current.admin}"><a href="javascript:;" class="row-order-status"
 										data-value="completed"> 已完成 </a></li>
 								</ul>
 							</div>
@@ -124,6 +124,13 @@
 										data-value="returned"> 已退回 </a></li>
 								</ul>
 							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="input-shippingSn" class="col-sm-2 control-label">物流单号</label>
+
+						<div class="col-sm-10">
+							<span class="form-control" th:text="*{shippingSn}"></span>
 						</div>
 					</div>
 					<div class="form-group">

@@ -42,7 +42,7 @@ public class Order extends DataEntity<Admin, Long> {
 	/** 商品 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	private ProductSku productSku;
-	
+
 	@Size(max = 200)
 	private String specification;
 
@@ -80,6 +80,9 @@ public class Order extends DataEntity<Admin, Long> {
 	/** 发货员 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Admin shipper;
+
+	@Size(max = 100)
+	private String shippingSn;
 
 	public String getSn() {
 		return sn;
@@ -199,5 +202,13 @@ public class Order extends DataEntity<Admin, Long> {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public String getShippingSn() {
+		return shippingSn;
+	}
+
+	public void setShippingSn(String shippingSn) {
+		this.shippingSn = shippingSn;
 	}
 }

@@ -326,7 +326,11 @@
 				} else {
 					$.post($form.attr('action'), $form.serialize(), function(result) {
 						if (result.success) {
-							$.alert(orderSubmitMessage, "订购成功");
+							$.alert(orderSubmitMessage, function() {
+								location.href = location.href;
+							}, {
+								title: "订购成功"
+							});
 						} else {
 							$.alert("提交失败", "提示");
 						}

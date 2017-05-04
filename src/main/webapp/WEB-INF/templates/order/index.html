@@ -6,7 +6,8 @@
 			订单管理 <small>订单列表</small>
 		</h1>
 		<ol class="breadcrumb">
-			<li><a href="javascript:;"><i class="fa fa-file-archive-o"></i> 订单管理</a></li>
+			<li><a href="javascript:;"><i class="fa fa-file-archive-o"></i>
+					订单管理</a></li>
 			<li class="active">订单列表</li>
 		</ol>
 	</section>
@@ -14,21 +15,26 @@
 	<section class="content">
 
 		<div class="mailbox-controls">
-			<div class="btn-group btn-group-sm" th:if="${currentUser.admin||currentUser.salesman}">
-				<a class="btn btn-primary" href="javascript:;" id="btn-getOrder" th:if="${currentUser.salesman}"> <i
-					class="fa fa-plus"></i> 获取订单
+			<div class="btn-group btn-group-sm"
+				th:if="${currentUser.admin||currentUser.salesman}">
+				<a class="btn btn-primary" href="javascript:;" id="btn-getOrder"
+					th:if="${currentUser.salesman}"> <i class="fa fa-plus"></i>
+					获取订单
 				</a>
-				<button th:if="${currentUser.admin}" aria-expanded="false" aria-haspopup="true" data-toggle="dropdown"
+				<button th:if="${currentUser.admin}" aria-expanded="false"
+					aria-haspopup="true" data-toggle="dropdown"
 					class="btn btn-primary dropdown-toggle" type="button">
 					批量 <span class="fa fa-caret-down"></span>
 				</button>
 				<ul th:if="${currentUser.admin}" class="dropdown-menu">
-					<li><a href="javascript:;" id="delete-button"> <i class="glyphicon glyphicon-remove"></i> 删除
+					<li><a href="javascript:;" id="delete-button"> <i
+							class="glyphicon glyphicon-remove"></i> 删除
 					</a></li>
 				</ul>
 			</div>
 			<div class="btn-group btn-group-sm">
-				<button id="open-search-button" type="button" class="btn btn-primary">
+				<button id="open-search-button" type="button"
+					class="btn btn-primary">
 					<i class="fa fa-search"></i>
 				</button>
 				<button type="button" class="btn btn-warning" id="refresh-button">
@@ -36,7 +42,8 @@
 				</button>
 			</div>
 			<div class="pull-right">
-				<button type="button" class="btn btn-primary btn-sm" id="daterange-btn">
+				<button type="button" class="btn btn-primary btn-sm"
+					id="daterange-btn">
 					<span> <i class="fa fa-calendar"></i> 选择时间范围
 					</span> <i class="fa fa-caret-down"></i>
 				</button>
@@ -47,28 +54,34 @@
 			<form id="search-form" class="form-search form-inline">
 				<div class="box-body">
 					<div class="form-group">
-						<label for="search-sn" class="control-label">订单号</label> <input class="form-control" id="search-sn"
-							placeholder="请输入订单号" name="sn" type="text">
+						<label for="search-sn" class="control-label">订单号</label> <input
+							class="form-control" id="search-sn" placeholder="请输入订单号"
+							name="sn" type="text">
 					</div>
 					<div class="form-group">
-						<label for="search-productSn" class="control-label">商品编号</label> <input class="form-control" id="search-productSn"
-							placeholder="请输入商品编号" name="product.sn" type="text">
+						<label for="search-productSn" class="control-label">商品编号</label> <input
+							class="form-control" id="search-productSn" placeholder="请输入商品编号"
+							name="product.sn" type="text">
 					</div>
 					<div class="form-group">
-						<label for="search-consignee" class="control-label">客户名称</label> <input class="form-control" id="search-consignee"
-							placeholder="请输入客户名称" name="consignee" type="text">
+						<label for="search-consignee" class="control-label">客户名称</label> <input
+							class="form-control" id="search-consignee" placeholder="请输入客户名称"
+							name="consignee" type="text">
 					</div>
 					<div class="form-group">
-						<label for="search-phone" class="control-label">客户电话</label> <input class="form-control" id="search-phone"
-							placeholder="请输入客户电话" name="phone" type="text">
+						<label for="search-phone" class="control-label">客户电话</label> <input
+							class="form-control" id="search-phone" placeholder="请输入客户电话"
+							name="phone" type="text">
 					</div>
 					<div class="form-group">
-						<label for="search-address" class="control-label">送货地址</label> <input class="form-control" id="search-address"
-							placeholder="请输入送货地址" name="address" type="text">
+						<label for="search-address" class="control-label">送货地址</label> <input
+							class="form-control" id="search-address" placeholder="请输入送货地址"
+							name="address" type="text">
 					</div>
 					<div class="form-group">
-						<label for="search-orderStatus" class="control-label">订单状态</label> <select id="search-orderStatus"
-							name="orderStatus" class="form-control">
+						<label for="search-orderStatus" class="control-label">订单状态</label>
+						<select id="search-orderStatus" name="orderStatus"
+							class="form-control">
 							<option value="" selected="selected">全部</option>
 							<option value="pending">待处理</option>
 							<option value="inhand">处理中</option>
@@ -79,8 +92,9 @@
 						</select>
 					</div>
 					<div class="form-group">
-						<label for="search-shippingStatus" class="control-label">发货状态</label> <select id="search-shippingStatus"
-							name="shippingStatus" class="form-control">
+						<label for="search-shippingStatus" class="control-label">发货状态</label>
+						<select id="search-shippingStatus" name="shippingStatus"
+							class="form-control">
 							<option value="" selected="selected">全部</option>
 							<option value="unshipped">未发货</option>
 							<option value="shipped">已发货</option>
@@ -88,7 +102,8 @@
 							<option value="returned">已退回</option>
 						</select>
 					</div>
-					<button type="submit" class="btn btn-primary btn-sm" id="search-button">
+					<button type="submit" class="btn btn-primary btn-sm"
+						id="search-button">
 						<i class="fa fa-search"></i> 搜索
 					</button>
 				</div>
@@ -100,18 +115,25 @@
 				<table id="grid-order" class="table table-hover">
 					<thead>
 						<tr>
-							<th data-column-id="id" data-type="string" data-identifier="true" data-visible="false">ID</th>
+							<th data-column-id="id" data-type="string" data-identifier="true"
+								data-visible="false">ID</th>
 							<th data-column-id="sn">订单编号</th>
-							<th data-formatter="productSn" data-css-class="hidden-xs" data-header-css-class="hidden-xs">商品编号</th>
-							<th data-column-id="consignee" data-css-class="hidden-xs" data-header-css-class="hidden-xs">客户名称</th>
-							<th data-column-id="phone" data-css-class="hidden-xs hidden-sm" data-header-css-class="hidden-xs hidden-sm">联系电话</th>
+							<th data-formatter="productSn" data-css-class="hidden-xs"
+								data-header-css-class="hidden-xs">商品编号</th>
+							<th data-column-id="consignee" data-css-class="hidden-xs"
+								data-header-css-class="hidden-xs">客户名称</th>
+							<th data-column-id="phone" data-css-class="hidden-xs hidden-sm"
+								data-header-css-class="hidden-xs hidden-sm">联系电话</th>
 							<th data-formatter="orderStatus" data-column-id="orderStatus">订单状态</th>
-							<th data-formatter="shippingStatus" data-column-id="shippingStatus" data-css-class="hidden-xs"
+							<th data-formatter="shippingStatus"
+								data-column-id="shippingStatus" data-css-class="hidden-xs"
 								data-header-css-class="hidden-xs">配送状态</th>
-							<th data-column-id="orderedDate" data-converter="datetime" data-css-class="hidden-xs hidden-sm column-datetime"
+							<th data-column-id="orderedDate" data-converter="datetime"
+								data-css-class="hidden-xs hidden-sm column-datetime"
 								data-header-css-class="hidden-xs hidden-sm header-datetime">下单时间</th>
-							<th data-formatter="commands" data-css-class="command-column" data-width="120px" data-sortable="false"
-								data-align="center" data-header-align="center">操作</th>
+							<th data-formatter="commands" data-css-class="command-column"
+								data-width="120px" data-sortable="false" data-align="center"
+								data-header-align="center">操作</th>
 						</tr>
 					</thead>
 				</table>
@@ -182,19 +204,25 @@
 										{
 											url : base + "/order/page",
 											post : function() {
-												var keyValues = $("#search-form").serialize();
+												var keyValues = $(
+														"#search-form")
+														.serialize();
 												var parameters = parseQueryString(keyValues);
-												var dateRange = $dateRangeButton.data("range");
-												if(dateRange&&dateRange!="") {
+												var dateRange = $dateRangeButton
+														.data("range");
+												if (dateRange
+														&& dateRange != "") {
 													parameters["dateRange"] = dateRange;
 												}
 												return parameters;
 											},
 											formatters : {
-												"productSn" : function(column, row) {
+												"productSn" : function(column,
+														row) {
 													return row.product.sn;
 												},
-												"orderStatus" : function(column, row) {
+												"orderStatus" : function(
+														column, row) {
 													var text = "新订单";
 													switch (row.orderStatus) {
 													case "pending":
@@ -219,7 +247,8 @@
 													default:
 														break;
 													}
-													return ((isSalesman && row.orderStatus != 'completed' && row.orderStatus != 'canceled') || isAdmin) ? ("\
+													return ((isSalesman
+															&& row.orderStatus != 'completed' && row.orderStatus != 'canceled') || isAdmin) ? ("\
 												<div class=\"dropdown\">\
 													<a id=\""+row.id+"Label\"class=\"dropdown-toggle\" data-target=\"#\" role=\"button\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">"
 															+ text
@@ -230,7 +259,8 @@
 															<a href=\"javascript:;\" class=\"row-order-status\" data-value=\"pending\"> 待处理\
 															</a>\
 														</li>")
-																	: "") + "<li>\
+																	: "")
+															+ "<li>\
 															<a href=\"javascript:;\" class=\"row-order-status\" data-value=\"inhand\"> 处理中\
 															</a>\
 														</li>\
@@ -245,16 +275,17 @@
 														<li>\
 															<a href=\"javascript:;\" class=\"row-order-status\" data-value=\"canceled\"> 已取消\
 															</a>\
-														</li>\
-														<li>\
+														</li>"
+															+ (isAdmin ? ("<li>\
 															<a href=\"javascript:;\" class=\"row-order-status\" data-value=\"completed\"> 已完成\
 															</a>\
-														</li>\
-													</ul>\
+														</li>")
+																	: "") + "</ul>\
 												</div>")
 															: text;
 												},
-												"shippingStatus" : function(column, row) {
+												"shippingStatus" : function(
+														column, row) {
 													var text = "未发货";
 													switch (row.shippingStatus) {
 													case "unshipped":
@@ -298,7 +329,8 @@
 													</div>")
 															: text;
 												},
-												"commands" : function(column, row) {
+												"commands" : function(column,
+														row) {
 													return "\
 			<div class=\"btn-group btn-group-sm\" data-row-id=\""+row.id+"\">\
 				<a class=\"btn btn-primary\" href=\"#/page/order/view/"+row.id+"\">\
@@ -308,7 +340,7 @@
 					<i class=\"fa fa-print\"></i>\
 				</a>")
 																	: "")
-															+ (((isSalesman && row.orderStatus != 'completed' && row.orderStatus != 'canceled') || isAdmin) ? ("<a class=\"btn btn-primary\" href=\"#/page/order/edit/"+row.id+"\">\
+															+ (((row.orderStatus != 'completed' && row.orderStatus != 'canceled') || isAdmin) ? ("<a class=\"btn btn-primary\" href=\"#/page/order/edit/"+row.id+"\">\
 					<i class=\"glyphicon glyphicon-edit\"></i>\
 				</a>")
 																	: "")
@@ -321,7 +353,8 @@
 					<li><a target=\"_blank\" href=\""+base+"/order/print/"+row.id+"\"><i class=\"fa fa-print\"></i> 打印</a></li>\
 					<li><a href=\"javascript:;\" class=\"command-delete\"><i class=\"glyphicon glyphicon-remove\"></i> 移除</a></li>\
 				</ul>"
-																	: "") + "</div>";
+																	: "")
+															+ "</div>";
 												}
 											}
 										});
@@ -329,7 +362,7 @@
 						var refreshGrid = function() {
 							gridAdmin.bootgrid("reload");
 						}
-						
+
 						$dateRangeButton.daterangepicker({
 							"timePicker" : true,
 							"timePicker24Hour" : true,
@@ -343,31 +376,52 @@
 								"toLabel" : "到",
 								"customRangeLabel" : "自定义",
 								"weekLabel" : "周",
-								"daysOfWeek" : [ "日", "一", "二", "三", "四", "五", "六" ],
-								"monthNames" : [ "一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月" ],
+								"daysOfWeek" : [ "日", "一", "二", "三", "四", "五",
+										"六" ],
+								"monthNames" : [ "一月", "二月", "三月", "四月", "五月",
+										"六月", "七月", "八月", "九月", "十月", "十一月",
+										"十二月" ],
 								"firstDay" : 1
 							},
 							ranges : {
 								'当天' : [ moment().startOf('days'), moment() ],
-								'昨天' : [ moment().subtract(1, 'days').startOf('days'), moment().startOf('days') ],
-								'最近7天' : [ moment().subtract(6, 'days'), moment() ],
-								'最近30天' : [ moment().subtract(29, 'days'), moment() ],
-								'当月' : [ moment().startOf('month'), moment().endOf('month') ],
-								'上个月' : [ moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month') ]
+								'昨天' : [
+										moment().subtract(1, 'days').startOf(
+												'days'),
+										moment().startOf('days') ],
+								'最近7天' : [ moment().subtract(6, 'days'),
+										moment() ],
+								'最近30天' : [ moment().subtract(29, 'days'),
+										moment() ],
+								'当月' : [ moment().startOf('month'),
+										moment().endOf('month') ],
+								'上个月' : [
+										moment().subtract(1, 'month').startOf(
+												'month'),
+										moment().subtract(1, 'month').endOf(
+												'month') ]
 							},
 							startDate : moment().subtract(29, 'days'),
 							endDate : moment()
 						}, function(start, end, label) {
-							var value = start.format('YYYY-MM-DD HH:mm') + ' - ' + end.format('YYYY-MM-DD HH:mm');
+							var value = start.format('YYYY-MM-DD HH:mm')
+									+ ' - ' + end.format('YYYY-MM-DD HH:mm');
 							$dateRangeButton.data("range", value);
 							$dateRangeButton.find('span').html(value);
 							refreshGrid();
 						});
-						$dateRangeButton.on('cancel.daterangepicker', function(ev, picker) {
-							$dateRangeButton.data("range", null);
-							$dateRangeButton.find('span').html(" <i class=\"fa fa-calendar\"></i> 选择时间范围 ");
-							refreshGrid();
-						});
+						$dateRangeButton
+								.on(
+										'cancel.daterangepicker',
+										function(ev, picker) {
+											$dateRangeButton
+													.data("range", null);
+											$dateRangeButton
+													.find('span')
+													.html(
+															" <i class=\"fa fa-calendar\"></i> 选择时间范围 ");
+											refreshGrid();
+										});
 
 						var changeOrderStatusRow = function(grid, id, status) {
 							if (confirm("确定要修改订单状态吗？")) {
@@ -415,39 +469,57 @@
 							var $table = $(this);
 							$table.find(".dropdown-toggle").dropdown();
 
-							$table.find(".command-delete").on("click", function(e) {
-								var entity_id = $(this).closest(".btn-group").data("row-id");
-								deleteRow($table, [ entity_id ]);
-							});
+							$table.find(".command-delete").on(
+									"click",
+									function(e) {
+										var entity_id = $(this).closest(
+												".btn-group").data("row-id");
+										deleteRow($table, [ entity_id ]);
+									});
 
-							$table.find(".row-order-status").on("click", function() {
-								var order_id = $(this).closest("ul").data("row-id");
-								changeOrderStatusRow($table, [ order_id ], $(this).data("value"));
-							});
+							$table.find(".row-order-status").on(
+									"click",
+									function() {
+										var order_id = $(this).closest("ul")
+												.data("row-id");
+										changeOrderStatusRow($table,
+												[ order_id ], $(this).data(
+														"value"));
+									});
 
-							$table.find(".row-shipping-status").on("click", function() {
-								var order_id = $(this).closest("ul").data("row-id");
-								changeShippingStatusRow($table, [ order_id ], $(this).data("value"));
-							});
+							$table.find(".row-shipping-status").on(
+									"click",
+									function() {
+										var order_id = $(this).closest("ul")
+												.data("row-id");
+										changeShippingStatusRow($table,
+												[ order_id ], $(this).data(
+														"value"));
+									});
 						});
 
-						$("#btn-getOrder").on("click", function() {
-							Pace.restart();
-							$.get(base + "/order/get", {}, function(resp) {
-								if (resp.success) {
-									refreshGrid();
-									$.alert({
-										title : "获取成功",
-										content : "共获取" + resp.orderCount + "张新订单"
-									});
-								} else {
-									$.alert({
-										title : false,
-										content : resp.msg
-									});
-								}
-							}, "json");
-						});
+						$("#btn-getOrder").on(
+								"click",
+								function() {
+									Pace.restart();
+									$.get(base + "/order/get", {}, function(
+											resp) {
+										if (resp.success) {
+											refreshGrid();
+											$.alert({
+												title : "获取成功",
+												content : "共获取"
+														+ resp.orderCount
+														+ "张新订单"
+											});
+										} else {
+											$.alert({
+												title : false,
+												content : resp.msg
+											});
+										}
+									}, "json");
+								});
 
 						$("#search-button").on("click", function() {
 							refreshGrid();

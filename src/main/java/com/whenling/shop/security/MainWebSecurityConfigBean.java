@@ -57,8 +57,8 @@ public class MainWebSecurityConfigBean extends WebSecurityConfigurerAdapter {
 				new ResultAuthenticationFailureHanlder(objectMapper.getObject(), messageSourceAccessor.getObject()));
 
 		ExceptionHandlingConfigurer<HttpSecurity> exceptionConfigurer = configurer.permitAll().and().authorizeRequests()
-				.antMatchers("/admin/**", "/sms/**", "/product/**", "/specification/**", "/setting/**")
-				.hasRole(Admin.ROLE_ADMIN).antMatchers("/deliveryCenter/**", "/deliveryTemplate/**")
+				.antMatchers("/admin/**", "/product/**", "/specification/**", "/setting/**").hasRole(Admin.ROLE_ADMIN)
+				.antMatchers("/sms/**", "/deliveryCenter/**", "/deliveryTemplate/**")
 				.hasAnyRole(Admin.ROLE_ADMIN, Admin.ROLE_SHIPPER).antMatchers("/order/**,/dashboard")
 				.hasAnyRole(Admin.ROLE_ADMIN, Admin.ROLE_SHIPPER, Admin.ROLE_SALESMAN, Admin.ROLE_SALESMAN_TEMP)
 				.antMatchers(skipAuthUrls).permitAll().anyRequest().authenticated().and().exceptionHandling();

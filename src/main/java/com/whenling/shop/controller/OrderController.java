@@ -93,13 +93,15 @@ public class OrderController extends CrudController<Order, Long> {
 	public Result changeShippingStatus(@PathVariable("id") Order order, String shippingStatus, Model model) {
 		order.setShippingStatus(shippingStatus);
 		order.setShipper(getCurrentUser());
+		if (Objects.equal(shippingStatus, "received") || Objects.equal(shippingStatus, "returned")) {
+			order.setOrderStatus("completed");
+		}
 		getBaseJpaRepository().save(order);
 		if (Objects.equal(order.getShippingStatus(), "shipped")) {
 			String template = SettingUtils.get().getShippingTemplate();
 			if (!Strings.isNullOrEmpty(template) && !Strings.isNullOrEmpty(order.getPhone())) {
 				SmsUtils.send(order.getPhone(), StringUtils.replace(template, "[sn]", order.getSn()));
 			}
-
 		}
 		return Result.success();
 	}
