@@ -320,24 +320,28 @@
 
 		$form.form();
 		$("#submitlink").on("click", function() {
-			$form.validate(function(error) {
-				if (error) {
+			var skuValue = $form.find("input[name=productSkuId]").val();
+			if(skuValue=="") {
+				$.alert("提交失败", "提示");
+			} else {
+				$form.validate(function(error) {
+					if (error) {
 
-				} else {
-					$.post($form.attr('action'), $form.serialize(), function(result) {
-						if (result.success) {
-							$.alert(orderSubmitMessage, function() {
-								location.href = location.href;
-							}, {
-								title: "订购成功"
-							});
-						} else {
-							$.alert("提交失败", "提示");
-						}
-					});
-				}
-			});
-
+					} else {
+						$.post($form.attr('action'), $form.serialize(), function(result) {
+							if (result.success) {
+								$.alert(orderSubmitMessage, function() {
+									location.href = location.href;
+								}, {
+									title: "订购成功"
+								});
+							} else {
+								$.alert("提交失败", "提示");
+							}
+						});
+					}
+				});
+			}
 		});
 	</script>
 	<div th:replace="/layout/statistics :: main"></div>
