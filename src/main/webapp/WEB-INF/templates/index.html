@@ -322,7 +322,7 @@
 		$("#submitlink").on("click", function() {
 			var skuValue = $form.find("input[name=productSkuId]").val();
 			if(skuValue=="") {
-				$.alert("提交失败", "提示");
+				$.alert("请选择商品规格", "提示");
 			} else {
 				$form.validate(function(error) {
 					if (error) {

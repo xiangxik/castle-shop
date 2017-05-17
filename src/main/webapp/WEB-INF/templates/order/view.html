@@ -85,7 +85,7 @@
 										data-value="followup"> 待跟进 </a></li>
 									<li><a href="javascript:;" class="row-order-status"
 										data-value="canceled"> 已取消 </a></li>
-									<li th:if="${current.admin}"><a href="javascript:;" class="row-order-status"
+									<li th:if="${currentUser.admin}"><a href="javascript:;" class="row-order-status"
 										data-value="completed"> 已完成 </a></li>
 								</ul>
 							</div>
