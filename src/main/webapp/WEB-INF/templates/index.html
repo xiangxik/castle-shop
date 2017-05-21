@@ -2,6 +2,9 @@
 
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-control" content="no-cache,no-store,must-revalidate">
+<meta http-equiv="Expires" content="0">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title th:text="${product.seoTitle}"></title>
@@ -331,7 +334,7 @@
 						$.post($form.attr('action'), $form.serialize(), function(result) {
 							if (result.success) {
 								$.alert(orderSubmitMessage, function() {
-									location.href = location.href;
+									location.reload();
 								}, {
 									title: "订购成功"
 								});
