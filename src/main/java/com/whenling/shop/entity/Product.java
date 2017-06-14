@@ -91,6 +91,10 @@ public class Product extends DataEntity<Admin, Long> implements Defaultable {
 	@Column(nullable = false)
 	private boolean isTop;
 
+	/** 简介 */
+	@Size(max = 1000)
+	private String summary;
+
 	/** 介绍 */
 	@Lob
 	private String introduction;
@@ -230,6 +234,14 @@ public class Product extends DataEntity<Admin, Long> implements Defaultable {
 
 	public void setTop(boolean isTop) {
 		this.isTop = isTop;
+	}
+
+	public String getSummary() {
+		return summary;
+	}
+
+	public void setSummary(String summary) {
+		this.summary = summary;
 	}
 
 	public String getIntroduction() {

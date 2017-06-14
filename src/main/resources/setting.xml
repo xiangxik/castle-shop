@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
 	<setting name="siteName" value="xxx店" />
+	<setting name="companyName" value="广州当凌信息科技有限公司" />
 	<setting name="address" value="广州市白云区竹" />
 	<setting name="phone" value="13503008668" />
 	<setting name="zipCode" value="510000" />
@@ -17,4 +18,8 @@
 	<setting name="smsAccount" value="网站验证码" />
 	<setting name="smsPassword" value="" />
 	<setting name="shippingTemplate" value="你的订单已发货，单号是[sn]" />
+	
+	<setting name="seoTitle" value="aaa" />
+	<setting name="seoKeywords" value="bbb" />
+	<setting name="seoDescription" value="ccc" />
 </config>

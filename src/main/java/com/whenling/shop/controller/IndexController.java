@@ -36,10 +36,12 @@ import com.whenling.shop.entity.Order;
 import com.whenling.shop.entity.Product;
 import com.whenling.shop.entity.ProductSku;
 import com.whenling.shop.entity.QAdmin;
+import com.whenling.shop.entity.QIndexSlider;
 import com.whenling.shop.entity.QOrder;
 import com.whenling.shop.entity.QProduct;
 import com.whenling.shop.entity.SpecificationValue;
 import com.whenling.shop.repo.AdminRepository;
+import com.whenling.shop.repo.IndexSliderRepository;
 import com.whenling.shop.repo.OrderRepository;
 import com.whenling.shop.repo.ProductRepository;
 import com.whenling.shop.repo.ProductSkuRepository;
@@ -65,19 +67,31 @@ public class IndexController {
 	@Autowired
 	private OrderRepository orderRepository;
 
+	@Autowired
+	private IndexSliderRepository indexSliderRepository;
+
 	@RequestMapping(value = { "", "/", "/index" }, method = RequestMethod.GET)
 	public String indexPage(Model model) {
 		if (!SettingUtils.get().getIsSiteEnabled()) {
 			return "/site_close";
 		}
-		Product product = productRepository.findDefault();
-		if (product == null) {
-			Iterable<Product> products = productRepository.findAll(QProduct.product.isMarketable.isTrue());
-			if (products != null && Iterables.size(products) > 0) {
-				product = products.iterator().next();
-			}
+		model.addAttribute("products", productRepository.findAll());
+		model.addAttribute("sliders", indexSliderRepository.findAll(QIndexSlider.indexSlider.disabled.isFalse()));
+		return "/index";
+	}
+
+	@RequestMapping(value = "/p", method = RequestMethod.GET)
+	public String productPage(String keywords, Model model) {
+		if (!SettingUtils.get().getIsSiteEnabled()) {
+			return "/site_close";
 		}
-		return p(product, model);
+		if (Strings.isNullOrEmpty(keywords)) {
+			model.addAttribute("products", productRepository.findAll());
+		} else {
+			model.addAttribute("products", productRepository.findAll(QProduct.product.name.contains(keywords)));
+		}
+		model.addAttribute("keywords", keywords);
+		return "/product_list";
 	}
 
 	@RequestMapping(value = "/p/{product}", method = RequestMethod.GET)
@@ -103,8 +117,8 @@ public class IndexController {
 			skuMap.put("price", numbers.formatDecimal(sku.getPrice(), 0, 2));
 			skuMap.put("marketPrice", numbers.formatDecimal(sku.getMarketPrice(), 0, 2));
 			skuMap.put("id", sku.getId());
-			skuMap.put("specificationValues", Lists.newArrayList(Iterables.transform(sku.getSpecificationValues(),
-					specificationValues -> String.valueOf(specificationValues.getId()))));
+			skuMap.put("specificationValues", Lists.newArrayList(
+					Iterables.transform(sku.getSpecificationValues(), specificationValues -> String.valueOf(specificationValues.getId()))));
 			skuList.add(skuMap);
 			allSpecificationValues.addAll(sku.getSpecificationValues());
 		});
@@ -114,13 +128,12 @@ public class IndexController {
 		if (product.getProductSkus() != null) {
 
 		}
-		return "/index";
+		return "/product_detail";
 	}
 
 	@RequestMapping(value = "/saveOrder", method = RequestMethod.POST)
 	@ResponseBody
-	public Result saveOrder(String name, String mobile, String address, String memo, Long productId,
-			Long productSkuId) {
+	public Result saveOrder(String name, String mobile, String address, String memo, Long productId, Long productSkuId) {
 		if (Strings.isNullOrEmpty(name) || Strings.isNullOrEmpty(mobile) || Strings.isNullOrEmpty(address)) {
 			return Result.failure();
 		}
@@ -146,8 +159,7 @@ public class IndexController {
 
 			List<String> specifications = new ArrayList<>();
 			sku.getSpecificationValues().forEach(specificationValue -> {
-				specifications
-						.add(specificationValue.getSpecification().getName() + ":" + specificationValue.getName());
+				specifications.add(specificationValue.getSpecification().getName() + ":" + specificationValue.getName());
 			});
 
 			order.setSpecification(Joiner.on(", ").join(specifications));
@@ -169,20 +181,18 @@ public class IndexController {
 		Date now = new Date();
 		Date weekAgo = DateUtils.addWeeks(now, -1);
 
-		long pendingOrderCount = orderRepository
-				.count(QOrder.order.orderStatus.eq("pending").and(QOrder.order.orderedDate.after(weekAgo)));
+		long pendingOrderCount = orderRepository.count(QOrder.order.orderStatus.eq("pending").and(QOrder.order.orderedDate.after(weekAgo)));
 		model.addAttribute("pendingOrderCount", pendingOrderCount);
 
 		long completedOrderCount = 0l;
 		if (currentUser.isAdmin()) {
-			completedOrderCount = orderRepository
-					.count(QOrder.order.orderStatus.eq("completed").and(QOrder.order.orderedDate.after(weekAgo)));
+			completedOrderCount = orderRepository.count(QOrder.order.orderStatus.eq("completed").and(QOrder.order.orderedDate.after(weekAgo)));
 		} else if (currentUser.isSalesman()) {
-			completedOrderCount = orderRepository.count(QOrder.order.orderStatus.eq("completed")
-					.and(QOrder.order.operator.eq(currentUser)).and(QOrder.order.orderedDate.after(weekAgo)));
+			completedOrderCount = orderRepository.count(
+					QOrder.order.orderStatus.eq("completed").and(QOrder.order.operator.eq(currentUser)).and(QOrder.order.orderedDate.after(weekAgo)));
 		} else if (currentUser.isShipper()) {
-			completedOrderCount = orderRepository.count(QOrder.order.orderStatus.eq("completed")
-					.and(QOrder.order.shipper.eq(currentUser)).and(QOrder.order.orderedDate.after(weekAgo)));
+			completedOrderCount = orderRepository.count(
+					QOrder.order.orderStatus.eq("completed").and(QOrder.order.shipper.eq(currentUser)).and(QOrder.order.orderedDate.after(weekAgo)));
 		}
 		model.addAttribute("completedOrderCount", completedOrderCount);
 		return "/dashboard";
@@ -202,8 +212,8 @@ public class IndexController {
 
 	@RequestMapping(value = "/profile_save", method = RequestMethod.POST)
 	@ResponseBody
-	public Result saveProfile(@CurrentUser Admin currentUser, Model model, String name, String oldPassword,
-			String newPassword, String email, String mobile) {
+	public Result saveProfile(@CurrentUser Admin currentUser, Model model, String name, String oldPassword, String newPassword, String email,
+			String mobile) {
 		List<ObjectError> objectErrors = new ArrayList<>();
 		if (Strings.isNullOrEmpty(name)) {
 			objectErrors.add(new FieldError("currentUser", "name", "姓名不能为空"));

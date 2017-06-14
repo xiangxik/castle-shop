@@ -1,0 +1,125 @@
+<!doctype html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<section class="content-header">
+		<h1>
+			首页轮播图 <small th:text="(${entity.new}?'新建':'编辑')+'首页轮播图'"></small>
+		</h1>
+		<ol class="breadcrumb">
+			<li><a href="javascript:;"><i class="fa fa-cogs"></i> 系统管理</a></li>
+			<li class="active" th:text="(${entity.new}?'新建':'编辑')+'首页轮播图'"></li>
+		</ol>
+	</section>
+
+	<section class="content">
+		<div class="box box-primary">
+			<div class="box-header with-border">
+				<h3 class="box-title">请输入首页轮播图信息</h3>
+			</div>
+			<form id="form-indexSlider" class="form-horizontal" th:action="@{/indexSlider/save}" method="post" th:object="${entity}">
+				<input type="hidden" name="id" th:value="*{id}" />
+				<div class="box-body">
+					<div class="form-group">
+						<label for="input-title" class="col-sm-2 control-label"><i class="required-tip">*</i>名称</label>
+
+						<div class="col-sm-10">
+							<input class="form-control" id="input-title" placeholder="请输入名称" name="title" th:value="*{title}" type="text" data-bv-notempty="true"
+								data-bv-notempty-message="请填写名称">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="input-sn" class="col-sm-2 control-label">展示图片</label>
+
+						<div class="col-sm-10">
+							<input type="file" id="image-upload" class="file-loading" name="file"> <input type="hidden" name="image" th:value="*{image}">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label">禁用</label>
+
+						<div class="col-sm-10">
+							<div class="checkbox icheck">
+								<label> <input type="checkbox" name="disabled" th:checked="*{disabled}"><input type="hidden" name="_disabled" />
+								</label>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="box-footer">
+					<button type="button" class="btn btn-default" onclick="location.href='#/page/indexSlider'">返回列表</button>
+					<button type="submit" class="btn btn-success pull-right">保存</button>
+				</div>
+			</form>
+		</div>
+	</section>
+
+
+	<script type="text/javascript">
+		requirejs([ "domReady", "validator", "icheck", "fileinput" ], function(ready) {
+			ready(function() {
+				activeMenu("management_indexSlider");
+				$(".icheck input").iCheck({
+					checkboxClass : 'icheckbox_square-blue',
+					radioClass : 'iradio_square-blue',
+					increaseArea : '20%' // optional
+				});
+				
+				var $imageUpload = $("#image-upload");
+				var $imageInput = $("#form-indexSlider input[name=image]");
+				$imageUpload.fileinput({
+					uploadUrl : base + "/multipart/upload/image",
+					language : "zh",
+					initialCaption : $imageInput.val(),
+					showPreview : false,
+					multiple : false,
+					showUpload : false, // hide upload button
+					showRemove : false, // hide remove button
+					minFileCount : 1,
+					maxFileCount : 1,
+					allowedFileTypes : [ "image" ],
+					maxFileSize : 200 * 1024 * 1024
+				}).on("filebatchselected", function(event, files) {
+					$(this).fileinput("upload");
+				}).on('fileuploaded', function(event, data, previewId, index) {
+					response = data.response;
+					if (response.success) {
+						$imageInput.val(response.urls);
+					}
+				});
+				
+				$("#form-indexSlider").bootstrapValidator().on("success.form.bv", function(e) {
+					e.preventDefault();
+					var $form = $(e.target);
+					var bv = $form.data('bootstrapValidator');
+					$.post($form.attr('action'), $form.serialize(), function(result) {
+						if (result.success) {
+							$.alert({
+								title : false,
+								content : "保存成功",
+								buttons : {
+									ok : {
+										text : "返回列表",
+										action : function() {
+											location.href = "#/page/indexSlider";
+										}
+									}
+								}
+							});
+						} else {
+							$.alert({
+								title : false,
+								content : result.msg
+							});
+							$form.bootstrapValidator('disableSubmitButtons', false);
+						}
+					}, "json");
+				});
+			});
+		});
+	</script>
+</body>
+</html>
+

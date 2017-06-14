@@ -7,7 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title th:text="${setting.seoTitle}">首页</title>
+<title th:text="'产品列表_'+${setting.seoTitle}">首页</title>
 <meta name="keywords" th:content="${setting.seoKeywords}">
 <meta name="description" th:content="${setting.seoDescription}">
 
@@ -50,13 +50,12 @@
 }
 </style>
 <script th:src="@{/assets/weui/zepto.min.js}"></script>
-<script th:src="@{/assets/weui/swipe.js}"></script>
 <script type="text/javascript" th:inline="javascript">
 	var base = /*[[${#httpServletRequest.getContextPath()}]]*/"";
+	var keywords = /*[[${keywords}]]*/"";
 </script>
 <script type="text/javascript">
 	$(function() {
-
 		$('.searchbar_wrap').searchBar({
 			cancelText : "取消",
 			searchText : '请输入关键字',
@@ -81,37 +80,16 @@
 			}
 		});
 
-		$('#slide1').swipeSlide({
-			autoSwipe : true,//自动切换默认是
-			speed : 3000,//速度默认4000
-			continuousScroll : true,//默认否
-			transitionType : 'cubic-bezier(0.22, 0.69, 0.72, 0.88)',//过渡动画linear/ease/ease-in/ease-out/ease-in-out/cubic-bezier
-			lazyLoad : true,//懒加载默认否
-			firstCallback : function(i, sum, me) {
-				me.find('.dot').children().first().addClass('cur');
-			},
-			callback : function(i, sum, me) {
-				me.find('.dot').children().eq(i).addClass('cur').siblings().removeClass('cur');
-			}
-		});
+		if (keywords && keywords != "") {
+			$("#weui_search_input").val(keywords);
+			$("#weui_search_input").focus();
+		}
 	});
 </script>
 </head>
 
 <body ontouchstart class="page-bg">
 	<div class="searchbar_wrap"></div>
-
-	<div class="slide" id="slide1">
-		<ul>
-			<li th:each="slider:${sliders}"><a href="javascript:;"> <img th:src="${slider.image}" th:alt="${slider.title}">
-			</a>
-				<div class="slide-desc" th:text="${slider.title}"></div></li>
-		</ul>
-		<div class="dot">
-			<span th:each="slider:${sliders}"></span>
-		</div>
-	</div>
-
 
 	<div class="weui_panel weui_panel_access">
 		<div class="weui_panel_hd">商品列表</div>
@@ -130,7 +108,6 @@
 				</div>
 			</a>
 		</div>
-		<a class="weui_panel_ft" th:href="@{/p}">查看更多</a>
 	</div>
 
 	<div class="weui-footer" style="margin-top: 20px;">
