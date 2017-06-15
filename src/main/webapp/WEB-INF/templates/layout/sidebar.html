@@ -38,6 +38,8 @@
 						</li>
 						<li class="menu_management_admin" th:if="${currentUser.admin}"><a href="#/page/admin"><i class="fa fa-circle-o"></i> <span>管理员管理</span></a>
 						</li>
+						<li class="menu_management_indexSlider" th:if="${currentUser.admin}"><a href="#/page/indexSlider"><i class="fa fa-circle-o"></i> <span>首页轮播图管理</span></a>
+						</li>
 						<li class="menu_management_specification" th:if="${currentUser.admin}"><a
 							href="#/page/specification"><i class="fa fa-circle-o"></i> <span>商品规格管理</span></a></li>
 						<li class="menu_management_deliveryCenter" th:if="${currentUser.admin||currentUser.shipper}"><a
