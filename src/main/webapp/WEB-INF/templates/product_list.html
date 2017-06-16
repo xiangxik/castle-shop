@@ -111,13 +111,9 @@
 	</div>
 
 	<div class="weui-footer" style="margin-top: 20px;">
-		<p class="weui-footer-text">
-			<span th:text="${setting.companyName}"></span> &copy;
-			<script>
-				document.write(new Date().getFullYear())
-			</script>
+		<p class="weui-footer-text">版权所有 &copy;
+			<span th:text="${setting.companyName}"></span> 
 		</p>
-		<p class="weui-footer-text" th:text="${setting.certtext}"></p>
 	</div>
 
 	<div th:replace="/layout/statistics :: main"></div>

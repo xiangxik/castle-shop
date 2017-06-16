@@ -75,7 +75,7 @@ public class IndexController {
 		if (!SettingUtils.get().getIsSiteEnabled()) {
 			return "/site_close";
 		}
-		model.addAttribute("products", productRepository.findAll());
+		model.addAttribute("products", productRepository.findAll(QProduct.product.isMarketable.isTrue()));
 		model.addAttribute("sliders", indexSliderRepository.findAll(QIndexSlider.indexSlider.disabled.isFalse()));
 		return "/index";
 	}
@@ -86,9 +86,10 @@ public class IndexController {
 			return "/site_close";
 		}
 		if (Strings.isNullOrEmpty(keywords)) {
-			model.addAttribute("products", productRepository.findAll());
+			model.addAttribute("products", productRepository.findAll(QProduct.product.isMarketable.isTrue()));
 		} else {
-			model.addAttribute("products", productRepository.findAll(QProduct.product.name.contains(keywords)));
+			model.addAttribute("products",
+					productRepository.findAll(QProduct.product.isMarketable.isTrue().and(QProduct.product.name.contains(keywords))));
 		}
 		model.addAttribute("keywords", keywords);
 		return "/product_list";
