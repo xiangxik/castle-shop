@@ -203,7 +203,7 @@
 		});
 		show_meddiate_booking();
 		function show_meddiate_booking() {
-			var v_scroll_top = $("body").scrollTop();
+			var v_scroll_top = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
 			var v_btn_top = $('#me_booking').offset().top;
 
 			if (v_btn_top - v_scroll_top < 400) {
