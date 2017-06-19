@@ -62,10 +62,8 @@
 <body ontouchstart class="page-bg" th:object="${product}">
 	<div class="slide" id="slide2">
 		<ul>
-			<li th:each="productImage:*{productImages}"><a href="javascript:;"> <img th:src="${productImage.source}"
-					th:alt="${productImage.title}">
-			</a>
-				</li>
+			<li th:each="productImage:*{productImages}"><a href="javascript:;"> <img th:src="${productImage.source}" th:alt="${productImage.title}">
+			</a></li>
 		</ul>
 		<div class="dot">
 			<span th:each="productImage:*{productImages}"></span>
@@ -91,8 +89,8 @@
 					<td colspan="3">
 						<div class="weui-label-list product-color">
 							<label class="weui-label" th:each="specificationValue : ${specification.specificationValues}"
-								th:if="${allSpecificationValues!=null&&#sets.contains(allSpecificationValues, specificationValue)}"
-								th:val="${specificationValue.id}" th:text="${specificationValue.name}">color</label>
+								th:if="${allSpecificationValues!=null&&#sets.contains(allSpecificationValues, specificationValue)}" th:val="${specificationValue.id}"
+								th:text="${specificationValue.name}">color</label>
 						</div>
 					</td>
 				</tr>
@@ -129,8 +127,7 @@
 		</div>
 	</div>
 
-	<div th:if="*{#lists.size(saleInfos)}>0" id="colee"
-		style="overflow: hidden; height: 60px; width: 100%; font-size: 12px; color: #ff7f0d">
+	<div th:if="*{#lists.size(saleInfos)}>0" id="colee" style="overflow: hidden; height: 60px; width: 100%; font-size: 12px; color: #ff7f0d">
 		<div id="colee1">
 			<p style="text-align: center;" th:each="saleInfo : *{saleInfos}" th:text="${saleInfo.content}"></p>
 		</div>
@@ -156,8 +153,8 @@
 				<label class="weui_label"><i class="required-tip">*</i>手机号码</label>
 			</div>
 			<div class="weui_cell_bd weui_cell_primary">
-				<input class="weui_input" type="tel" required pattern="[0-9]{11}" maxlength="11" placeholder="输入联系的手机号码"
-					emptyTips="请输入手机号" name="mobile" notMatchTips="请输入正确的手机号">
+				<input class="weui_input" type="tel" required pattern="[0-9]{11}" maxlength="11" placeholder="输入联系的手机号码" emptyTips="请输入手机号" name="mobile"
+					notMatchTips="请输入正确的手机号">
 			</div>
 			<div class="weui_cell_ft">
 				<i class="weui_icon_warn"></i>
@@ -201,12 +198,32 @@
 		$(window).scroll(function() {
 			show_meddiate_booking();
 		});
+		
+		var $show = $("#show_span");
 		show_meddiate_booking();
 		function show_meddiate_booking() {
 			var v_scroll_top = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
 			var v_btn_top = $('#me_booking').offset().top;
-
-			if (v_btn_top - v_scroll_top < 400) {
+			
+			//当滚动至colee1与colee2交界时
+			var winWidth = 0;
+			var winHeight = 0;
+			
+			if (window.innerWidth)
+				winWidth = window.innerWidth;
+			else if ((document.body) && (document.body.clientWidth))
+				winWidth = document.body.clientWidth;
+			//获取窗口高度 
+			if (window.innerHeight)
+				winHeight = window.innerHeight;
+			else if ((document.body) && (document.body.clientHeight))
+				winHeight = document.body.clientHeight;
+			//通过深入Document内部对body进行检测，获取窗口大小 
+			if (document.documentElement && document.documentElement.clientHeight && document.documentElement.clientWidth) {
+				winHeight = document.documentElement.clientHeight;
+				winWidth = document.documentElement.clientWidth;
+			}
+			if (v_btn_top-winHeight-v_scroll_top < -300) {
 				$("#gotorder").hide();
 			} else {
 				$("#gotorder").show();
@@ -222,7 +239,6 @@
 		}
 		var scrollTop = -1;
 		function Marquee1() {
-			//当滚动至colee1与colee2交界时
 			if (scrollTop == colee.scrollTop) {
 				colee.scrollTop -= colee1.offsetHeight; //colee跳到最顶端
 			} else {
@@ -262,8 +278,7 @@
 			});
 			var locked = true;
 			$.each(skuList, function(i, sku) {
-				if (sku.specificationValues.length == selectedIds.length
-						&& contains(sku.specificationValues, selectedIds)) {
+				if (sku.specificationValues.length == selectedIds.length && contains(sku.specificationValues, selectedIds)) {
 					//locked = false;
 					$price.text("￥ " + sku.price);
 					$marketPrice.text("￥ " + sku.marketPrice);
@@ -324,7 +339,7 @@
 		$form.form();
 		$("#submitlink").on("click", function() {
 			var skuValue = $form.find("input[name=productSkuId]").val();
-			if(skuValue=="") {
+			if (skuValue == "") {
 				$.alert("请选择商品规格", "提示");
 			} else {
 				$form.validate(function(error) {
@@ -336,7 +351,7 @@
 								$.alert(orderSubmitMessage, function() {
 									location.reload();
 								}, {
-									title: "订购成功"
+									title : "订购成功"
 								});
 							} else {
 								$.alert("提交失败", "提示");
